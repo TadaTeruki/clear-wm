@@ -1,0 +1,14 @@
+[package]
+name = "zym-session"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+x11rb = { version = "0.11.0", features = ["allow-unsafe-code", "render"] }
+zym-domain = { path = "../zym-domain" }
+zym-event = { path = "../zym-event" }
+log = "0.4.17"
+thiserror = "1.0.38"

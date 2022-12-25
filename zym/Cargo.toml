@@ -1,0 +1,13 @@
+[package]
+name = "zym"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+zym-session = { path = "../zym-session" }
+zym-logger = { path = "../zym-logger" }
+zym-config = { path = "../zym-config" }
+log = "0.4.17"
