@@ -13,14 +13,14 @@ static mut WM_LOG_FILE: Option<File> = None;
 
 fn logfile_init(config: &Config) {
     unsafe {
-        let filename = match config.get_logfile() {
+        let filename = match &config.system_config().logfile {
             Some(v) => v,
             None => {
                 warn!("the logfile not specified. log will only be written to stdout");
                 return;
             }
         };
-        WM_LOG_FILE = match File::create(&filename) {
+        WM_LOG_FILE = match File::create(filename) {
             Ok(v) => Some(v),
             Err(err) => {
                 eprintln!("{}", err);

@@ -1,0 +1,8 @@
+{
+    "client": {
+        "knob": {
+            "titlebar_height": 10,
+            "border_radius": 5
+        }
+    }
+}
