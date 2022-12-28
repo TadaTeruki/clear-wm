@@ -1,12 +1,12 @@
 use x11rb::protocol::xproto::Visualid;
-use zym_model::common::session::VisualInfoImpl;
+use zym_model::common::session::VisualRepositoryImpl;
 
-pub struct WmVisualInfo {
+pub struct WmVisualRepository {
     depth: u8,
     visual_id: Visualid,
 }
 
-impl WmVisualInfo {
+impl WmVisualRepository {
     pub fn new(depth_: u8, visual_id_: Visualid) -> Self {
         Self {
             depth: depth_,
@@ -15,7 +15,7 @@ impl WmVisualInfo {
     }
 }
 
-impl VisualInfoImpl for WmVisualInfo {
+impl VisualRepositoryImpl for WmVisualRepository {
     fn depth(&self) -> u8 {
         self.depth
     }

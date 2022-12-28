@@ -37,7 +37,7 @@ impl<'a> DrawableImpl<'a> for WmClientFrameWindow {
             ColormapAlloc::NONE,
             colormap,
             session.screen().root,
-            session.visual_info().visual_id(),
+            session.visual_repository().visual_id(),
         )?;
 
         let win_aux = CreateWindowAux::new()
@@ -52,7 +52,7 @@ impl<'a> DrawableImpl<'a> for WmClientFrameWindow {
             .background_pixel(session.screen().white_pixel);
 
         session.connection().create_window(
-            session.visual_info().depth(),
+            session.visual_repository().depth(),
             win,
             session.screen().root,
             x,
@@ -61,14 +61,14 @@ impl<'a> DrawableImpl<'a> for WmClientFrameWindow {
             height,
             0,
             WindowClass::INPUT_OUTPUT,
-            session.visual_info().visual_id(),
+            session.visual_repository().visual_id(),
             &win_aux,
         )?;
 
         let sfc = cairo::XCBSurface::create(
-            session.cairo().cairo_connection(),
+            session.cairo_repository().cairo_connection(),
             &cairo::XCBDrawable(win),
-            session.cairo().cairo_visual_type(),
+            session.cairo_repository().cairo_visual_type(),
             width.into(),
             height.into(),
         )

@@ -2,15 +2,15 @@ use x11rb::connection::Connection;
 use x11rb::protocol::xproto::{ConnectionExt as _, *};
 use x11rb::xcb_ffi;
 use zym_config::WmConfig;
-use zym_model::common::session::{CairoImpl, SessionImpl, VisualInfoImpl};
+use zym_model::common::session::{CairoRepositoryImpl, SessionImpl, VisualRepositoryImpl};
 
 use x11rb::errors::ReplyError;
 use x11rb::protocol::ErrorKind;
 
 use thiserror::Error;
 
-use crate::cairo::WmCairo;
-use crate::visual_info::WmVisualInfo;
+use crate::repository::cairo::WmCairoRepository;
+use crate::repository::visual::WmVisualRepository;
 
 #[derive(Error, Debug)]
 pub enum SessionError {
@@ -23,8 +23,8 @@ pub enum SessionError {
 pub struct WmSession<'a> {
     connection: &'a xcb_ffi::XCBConnection,
     screen: &'a Screen,
-    visual_info: &'a WmVisualInfo,
-    cairo_repository: &'a WmCairo<'a>,
+    visual_repository: &'a WmVisualRepository,
+    cairo_repository: &'a WmCairoRepository<'a>,
     config: &'a WmConfig,
 }
 
@@ -32,8 +32,8 @@ impl<'a> WmSession<'a> {
     pub fn new(
         connection_: &'a xcb_ffi::XCBConnection,
         screen_num: usize,
-        visual_info_: &'a WmVisualInfo,
-        cairo_: &'a WmCairo,
+        visual_repository_: &'a WmVisualRepository,
+        cairo_: &'a WmCairoRepository,
         config_: &'a WmConfig,
     ) -> Result<Self, ReplyError> {
         let screen_: &Screen = &connection_.setup().roots[screen_num];
@@ -41,7 +41,7 @@ impl<'a> WmSession<'a> {
         Ok(Self {
             connection: connection_,
             screen: screen_,
-            visual_info: visual_info_,
+            visual_repository: visual_repository_,
             cairo_repository: cairo_,
             config: config_,
         })
@@ -89,11 +89,11 @@ impl<'a> SessionImpl<'a> for WmSession<'a> {
         self.config
     }
 
-    fn visual_info(&self) -> &'a dyn VisualInfoImpl {
-        self.visual_info
+    fn visual_repository(&self) -> &'a dyn VisualRepositoryImpl {
+        self.visual_repository
     }
 
-    fn cairo(&self) -> &'a dyn CairoImpl<'a> {
+    fn cairo_repository(&self) -> &'a dyn CairoRepositoryImpl<'a> {
         self.cairo_repository
     }
 }

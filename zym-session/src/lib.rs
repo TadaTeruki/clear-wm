@@ -1,3 +1,2 @@
-pub mod cairo;
+pub mod repository;
 pub mod session;
-pub mod visual_info;

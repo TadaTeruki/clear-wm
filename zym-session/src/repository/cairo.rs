@@ -1,11 +1,11 @@
-use zym_model::common::session::CairoImpl;
+use zym_model::common::session::CairoRepositoryImpl;
 
-pub struct WmCairo<'a> {
+pub struct WmCairoRepository<'a> {
     cairo_connection: &'a cairo::XCBConnection,
     cairo_visual_type: &'a cairo::XCBVisualType,
 }
 
-impl<'a> WmCairo<'a> {
+impl<'a> WmCairoRepository<'a> {
     pub fn new(
         cairo_connection_: &'a cairo::XCBConnection,
         cairo_visual_type_: &'a cairo::XCBVisualType,
@@ -16,7 +16,7 @@ impl<'a> WmCairo<'a> {
         }
     }
 }
-impl<'a> CairoImpl<'a> for WmCairo<'a> {
+impl<'a> CairoRepositoryImpl<'a> for WmCairoRepository<'a> {
     fn cairo_connection(&self) -> &'a cairo::XCBConnection {
         self.cairo_connection
     }

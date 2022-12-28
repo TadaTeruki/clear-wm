@@ -11,7 +11,10 @@ use x11rb::{
 use zym_config::Config;
 use zym_controller::start_session;
 use zym_logger::WmLogger;
-use zym_session::{cairo::WmCairo, session::WmSession, visual_info::WmVisualInfo};
+use zym_session::{
+    repository::{cairo::WmCairoRepository, visual::WmVisualRepository},
+    session::WmSession,
+};
 
 static LOGGER: WmLogger = WmLogger;
 
@@ -32,9 +35,9 @@ fn main() {
     let cairo_visual_type =
         unsafe { cairo::XCBVisualType::from_raw_none(&mut visual_type as *mut _ as _) };
 
-    let visual_info = WmVisualInfo::new(depth, visual_id);
+    let visual_info = WmVisualRepository::new(depth, visual_id);
 
-    let cairo_session = WmCairo::new(&cairo_connection, &cairo_visual_type);
+    let cairo_session = WmCairoRepository::new(&cairo_connection, &cairo_visual_type);
 
     let session = WmSession::new(
         &connection,
