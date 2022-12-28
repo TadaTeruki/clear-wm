@@ -2,7 +2,7 @@ use chrono::Local;
 use log::{info, warn, Level, LevelFilter, Metadata, Record, SetLoggerError};
 use std::fs::File;
 use std::io::Write;
-use zym_config::Config;
+use zym_config::BuildConfig;
 
 const WM_LOGGER_STYLE_ERROR: &str = "\x1b[1;31m";
 const WM_LOGGER_STYLE_WARN: &str = "\x1b[1;33m";
@@ -11,9 +11,9 @@ const WM_LOGGER_STYLE_END: &str = "\x1b[0m";
 
 static mut WM_LOG_FILE: Option<File> = None;
 
-fn logfile_init(config: &Config) {
+fn logfile_init(build_config: &BuildConfig) {
     unsafe {
-        let filename = match &config.system_config().logfile {
+        let filename = match &build_config.logfile {
             Some(v) => v,
             None => {
                 warn!("the logfile not specified. log will only be written to stdout");
@@ -33,17 +33,17 @@ fn logfile_init(config: &Config) {
         );
     }
 }
-pub struct WMLogger;
+pub struct WmLogger;
 
-impl WMLogger {
-    pub fn init(&'static self, config: &Config) -> Result<(), SetLoggerError> {
+impl WmLogger {
+    pub fn init(&'static self, build_config: &BuildConfig) -> Result<(), SetLoggerError> {
         log::set_logger(self).map(|()| log::set_max_level(LevelFilter::Info))?;
-        logfile_init(config);
+        logfile_init(build_config);
         Ok(())
     }
 }
 
-impl log::Log for WMLogger {
+impl log::Log for WmLogger {
     fn enabled(&self, metadata: &Metadata) -> bool {
         metadata.level() <= Level::Info
     }
@@ -95,9 +95,11 @@ mod tests {
 
     #[test]
     fn simple_test() {
-        static LOGGER: WMLogger = WMLogger;
+        static LOGGER: WmLogger = WmLogger;
         let config = Config::load().expect("failed to load configs");
-        LOGGER.init(&config).expect("failed to load logger");
+        LOGGER
+            .init(config.build_config())
+            .expect("failed to load logger");
 
         info!("this is information");
         warn!("this is warning");

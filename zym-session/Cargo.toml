@@ -8,7 +8,7 @@ edition.workspace = true
 
 [dependencies]
 x11rb = { version = "0.11.0", features = ["allow-unsafe-code", "render"] }
-zym-domain = { path = "../zym-domain" }
-zym-event = { path = "../zym-event" }
-log = "0.4.17"
-thiserror = "1.0.38"
+cairo-rs = { version = "0.16.7", features = ["xcb"] }
+zym-config = { path = "../zym-config" }
+zym-model = { path = "../zym-model" }
+thiserror = "1.0"

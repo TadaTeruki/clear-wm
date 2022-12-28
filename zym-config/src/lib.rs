@@ -1,16 +1,34 @@
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 use std::env;
 use std::error::Error;
 use std::fs;
 
 #[derive(Debug)]
 pub struct Config {
-    system_config: SystemConfig,
+    build: BuildConfig,
+    wm: WmConfig,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-pub struct SystemConfig {
+#[derive(Deserialize, Debug)]
+pub struct BuildConfig {
     pub logfile: Option<String>,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct WmFrameConfig {
+    pub titlebar_height: u16,
+    pub border_width: u16,
+    pub border_radius: u16,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct WmClientConfig {
+    pub frame: WmFrameConfig,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct WmConfig {
+    pub client: WmClientConfig,
 }
 
 impl Config {
@@ -20,22 +38,35 @@ impl Config {
             panic!("could not open the zym configuration file.");
         }
 
-        let config_file = args[1].clone();
+        let config_file = &args[1].clone();
 
-        let parsed_system_config: SystemConfig;
+        let parsed_build_config: BuildConfig;
         {
-            let system_config_file = config_file + "/zym-system.json";
-            println!("{}", system_config_file);
-            let raw_system_config = fs::read_to_string(system_config_file)?;
-            parsed_system_config = serde_json::from_str(&raw_system_config)?;
+            let file = config_file.to_string() + "/zym-build.json";
+            println!("{}", file);
+            let raw = fs::read_to_string(file)?;
+            parsed_build_config = serde_json::from_str(&raw)?;
+        }
+
+        let parsed_wm_config: WmConfig;
+        {
+            let file = config_file.to_string() + "/zym-wm.json";
+            println!("{}", file);
+            let raw = fs::read_to_string(file)?;
+            parsed_wm_config = serde_json::from_str(&raw)?;
         }
 
         Ok(Self {
-            system_config: parsed_system_config,
+            build: parsed_build_config,
+            wm: parsed_wm_config,
         })
     }
 
-    pub fn system_config(&self) -> &SystemConfig {
-        &self.system_config
+    pub fn build_config(&self) -> &BuildConfig {
+        &self.build
+    }
+
+    pub fn wm_config(&self) -> &WmConfig {
+        &self.wm
     }
 }
