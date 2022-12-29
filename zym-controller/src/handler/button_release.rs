@@ -1,6 +1,6 @@
 use std::error::Error;
 use x11rb::protocol::xproto::ButtonReleaseEvent;
-use zym_model::common::session::SessionImpl;
+use zym_session::common::SessionImpl;
 
 pub fn handle_button_release(
     _session: &dyn SessionImpl,

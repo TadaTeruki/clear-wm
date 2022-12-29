@@ -1,11 +1,11 @@
 use std::error::Error;
-use x11rb::protocol::xproto::{ConnectionExt, MapRequestEvent};
-use zym_model::common::session::SessionImpl;
+use x11rb::protocol::xproto::MapRequestEvent;
+use zym_session::common::SessionImpl;
 
 pub fn handle_map_request(
-    session: &dyn SessionImpl,
+    session: &mut dyn SessionImpl,
     event: &MapRequestEvent,
 ) -> Result<(), Box<dyn Error>> {
-    session.connection().map_window(event.window)?;
+    session.compose_client(event.window)?;
     Ok(())
 }

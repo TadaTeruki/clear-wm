@@ -7,11 +7,12 @@ edition.workspace = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-x11rb = { version = "0.11.0", features = ["allow-unsafe-code", "render"] }
-cairo-rs = { version = "0.16.7", features = ["xcb"] }
+x11rb = { version = "0.11", features = ["allow-unsafe-code", "render"] }
+cairo-rs = { version = "0.16", features = ["xcb"] }
 zym-session = { path = "../zym-session" }
 zym-controller = { path = "../zym-controller" }
 zym-logger = { path = "../zym-logger" }
 zym-model = { path = "../zym-model" }
+zym-manager = { path = "../zym-manager" }
 zym-config = { path = "../zym-config" }
 log = "0.4"

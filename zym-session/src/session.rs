@@ -1,99 +1,69 @@
+use std::error::Error;
+
 use x11rb::connection::Connection;
-use x11rb::protocol::xproto::{ConnectionExt as _, *};
-use x11rb::xcb_ffi;
+use x11rb::protocol::xproto::{ConfigureRequestEvent, Screen, Window};
+use x11rb::protocol::Event;
+use x11rb::xcb_ffi::XCBConnection;
 use zym_config::WmConfig;
-use zym_model::common::session::{CairoRepositoryImpl, SessionImpl, VisualRepositoryImpl};
 
 use x11rb::errors::ReplyError;
-use x11rb::protocol::ErrorKind;
+use zym_model::common::manager::ClientManagerImpl;
+use zym_model::entity::visual::WmVisual;
 
-use thiserror::Error;
+use crate::common::SessionImpl;
 
-use crate::repository::cairo::WmCairoRepository;
-use crate::repository::visual::WmVisualRepository;
-
-#[derive(Error, Debug)]
-pub enum SessionError {
-    #[error("another wm is running")]
-    AnotherWMIsRunning,
-
-    #[error("unexpected error: {0}")]
-    Unexpected(String),
-}
 pub struct WmSession<'a> {
-    connection: &'a xcb_ffi::XCBConnection,
+    connection: &'a XCBConnection,
     screen: &'a Screen,
-    visual_repository: &'a WmVisualRepository,
-    cairo_repository: &'a WmCairoRepository<'a>,
+    visual: &'a WmVisual,
     config: &'a WmConfig,
+    manager: &'a mut dyn ClientManagerImpl<'a>,
 }
 
 impl<'a> WmSession<'a> {
     pub fn new(
-        connection_: &'a xcb_ffi::XCBConnection,
-        screen_num: usize,
-        visual_repository_: &'a WmVisualRepository,
-        cairo_: &'a WmCairoRepository,
+        connection_: &'a XCBConnection,
+        screen_: &'a Screen,
+        visual_: &'a WmVisual,
         config_: &'a WmConfig,
+        manager_: &'a mut dyn ClientManagerImpl<'a>,
     ) -> Result<Self, ReplyError> {
-        let screen_: &Screen = &connection_.setup().roots[screen_num];
-
         Ok(Self {
             connection: connection_,
             screen: screen_,
-            visual_repository: visual_repository_,
-            cairo_repository: cairo_,
+            visual: visual_,
             config: config_,
+            manager: manager_,
         })
-    }
-
-    pub fn init_as_wm(self) -> Result<Self, SessionError> {
-        let aux = ChangeWindowAttributesAux::default()
-            .event_mask(EventMask::SUBSTRUCTURE_REDIRECT | EventMask::SUBSTRUCTURE_NOTIFY);
-
-        match self
-            .connection
-            .change_window_attributes(self.screen.root, &aux)
-        {
-            Ok(result) => match result.check() {
-                Ok(_) => {}
-                Err(err) => {
-                    if let ReplyError::X11Error(ref x11err) = err {
-                        if x11err.error_kind == ErrorKind::Access {
-                            return Err(SessionError::AnotherWMIsRunning);
-                        }
-                    }
-
-                    return Err(SessionError::Unexpected(format!("{:?}", err)));
-                }
-            },
-            Err(err) => {
-                return Err(SessionError::Unexpected(err.to_string()));
-            }
-        }
-
-        Ok(self)
     }
 }
 
 impl<'a> SessionImpl<'a> for WmSession<'a> {
-    fn connection(&self) -> &'a xcb_ffi::XCBConnection {
-        self.connection
+    fn wait_for_event(&self) -> Result<Event, Box<dyn Error>> {
+        self.connection.flush()?;
+        let event = self.connection.wait_for_event()?;
+        Ok(event)
     }
 
-    fn screen(&self) -> &'a Screen {
-        self.screen
+    fn poll_for_event(&self) -> Result<Option<Event>, Box<dyn Error>> {
+        let event = self.connection.poll_for_event()?;
+        Ok(event)
     }
 
-    fn config(&self) -> &'a WmConfig {
-        self.config
+    fn compose_client(&mut self, window: Window) -> Result<(), Box<dyn Error>> {
+        let client_id = self.manager.create(
+            self.connection,
+            self.screen,
+            self.visual,
+            self.config,
+            window,
+        )?;
+        self.manager.map(self.connection, client_id, self.config)?;
+        Ok(())
     }
 
-    fn visual_repository(&self) -> &'a dyn VisualRepositoryImpl {
-        self.visual_repository
-    }
-
-    fn cairo_repository(&self) -> &'a dyn CairoRepositoryImpl<'a> {
-        self.cairo_repository
+    fn configure_window(&self, event: &ConfigureRequestEvent) -> Result<(), Box<dyn Error>> {
+        self.manager.configure(self.connection, event)?;
+        Ok(())
     }
 }

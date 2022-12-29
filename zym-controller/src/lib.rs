@@ -3,8 +3,8 @@ mod handler;
 use std::error::Error;
 
 use log::{error, info};
-use x11rb::{connection::Connection, protocol::Event};
-use zym_model::common::session::SessionImpl;
+use x11rb::protocol::Event;
+use zym_session::common::SessionImpl;
 
 use crate::handler::{
     button_press::handle_button_press, button_release::handle_button_release,
@@ -13,24 +13,18 @@ use crate::handler::{
     unmap_notify::handle_unmap_notify,
 };
 
-pub fn start_session(session: &dyn SessionImpl) {
+pub fn start_session(session: &mut dyn SessionImpl) {
     loop {
-        match event_loop(session) {
-            Ok(_) => {
-                info!("session was successfully finished");
-                return;
-            }
-            Err(err) => {
-                error!("{}", err);
-            }
+        if let Err(err) = event_loop(session) {
+            error!("{}", err);
         }
     }
 }
 
-pub fn event_loop(session: &dyn SessionImpl) -> Result<(), Box<dyn Error>> {
-    session.connection().flush()?;
-    let event = session.connection().wait_for_event()?;
+pub fn event_loop(session: &mut dyn SessionImpl) -> Result<(), Box<dyn Error>> {
+    let event = session.wait_for_event()?;
     let mut event_option = Some(event);
+
     while let Some(event) = event_option {
         info!("X event - {:?}", event);
 
@@ -46,7 +40,7 @@ pub fn event_loop(session: &dyn SessionImpl) -> Result<(), Box<dyn Error>> {
             Event::Error(err) => error!("{:?}", err),
             _ => {}
         }
-        event_option = session.connection().poll_for_event()?;
+        event_option = session.poll_for_event()?;
     }
     Ok(())
 }

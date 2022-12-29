@@ -1,2 +1,2 @@
 pub mod client;
-pub mod drawable;
+pub mod visual;

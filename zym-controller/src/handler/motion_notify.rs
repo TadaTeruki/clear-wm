@@ -1,6 +1,6 @@
 use std::error::Error;
 use x11rb::protocol::xproto::MotionNotifyEvent;
-use zym_model::common::session::SessionImpl;
+use zym_session::common::SessionImpl;
 
 pub fn handle_motion_notify(
     _session: &dyn SessionImpl,
