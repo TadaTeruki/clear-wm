@@ -4,7 +4,7 @@ use std::error::Error;
 
 use log::{error, info};
 use x11rb::protocol::Event;
-use zym_session::common::SessionImpl;
+use zym_session::common::{ClientSessionImpl, EventSessionImpl};
 
 use crate::handler::{
     button_press::handle_button_press, button_release::handle_button_release,
@@ -13,7 +13,7 @@ use crate::handler::{
     unmap_notify::handle_unmap_notify,
 };
 
-pub fn start_session(session: &mut dyn SessionImpl) {
+pub fn start_session<'a, S: ClientSessionImpl<'a> + EventSessionImpl<'a>>(session: &mut S) {
     loop {
         if let Err(err) = event_loop(session) {
             error!("{}", err);
@@ -21,7 +21,9 @@ pub fn start_session(session: &mut dyn SessionImpl) {
     }
 }
 
-pub fn event_loop(session: &mut dyn SessionImpl) -> Result<(), Box<dyn Error>> {
+pub fn event_loop<'a, S: ClientSessionImpl<'a> + EventSessionImpl<'a>>(
+    session: &mut S,
+) -> Result<(), Box<dyn Error>> {
     let event = session.wait_for_event()?;
     let mut event_option = Some(event);
 

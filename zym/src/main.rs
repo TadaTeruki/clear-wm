@@ -7,7 +7,7 @@ use x11rb::{
 use zym_config::Config;
 use zym_controller::start_session;
 use zym_logger::WmLogger;
-use zym_manager::WmClientManager;
+use zym_manager::manager::WmClientManager;
 use zym_model::entity::visual::WmVisual;
 use zym_session::session::WmSession;
 

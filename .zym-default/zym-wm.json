@@ -1,7 +1,7 @@
 {
     "client": {
         "frame": {
-            "titlebar_height": 10,
+            "titlebar_height": 20,
             "border_width" : 5,
             "border_radius": 5
         }
