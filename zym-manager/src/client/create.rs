@@ -10,11 +10,12 @@ use x11rb::{
 };
 use zym_config::WmConfig;
 use zym_model::entity::{
-    client::{ClientID, WmClient},
+    client::{geometry::ClientGeometry, ClientID, WindowType, WmClient},
     visual::WmVisual,
 };
 
 use crate::manager::WmClientManager;
+
 impl WmClientManager {
     pub fn create_client(
         &mut self,
@@ -24,22 +25,13 @@ impl WmClientManager {
         config: &WmConfig,
         window: Window,
     ) -> Result<ClientID, Box<dyn Error>> {
-        let client_config = &config.client;
-        let app_geom = connection.get_geometry(window)?.reply()?;
-
-        let (frame, frame_surface) = {
-            let border_width = client_config.frame.border_width;
-            let titlebar_height = client_config.frame.titlebar_height;
-            create_frame(
-                connection,
-                screen,
-                visual,
-                app_geom.x - border_width as i16,
-                app_geom.y - border_width as i16,
-                app_geom.width + border_width * 2,
-                app_geom.height + border_width * 2 + titlebar_height,
-            )?
+        let app_geom = {
+            let g = connection.get_geometry(window)?.reply()?;
+            ClientGeometry::from_app_absolute(g.x, g.y, g.width, g.height, config)
         };
+
+        let (frame, frame_surface) =
+            { create_frame(connection, screen, visual, config, &app_geom)? };
 
         let mut client_id = self.last_client_id;
 
@@ -47,8 +39,10 @@ impl WmClientManager {
             client_id += 1;
         }
 
-        self.client_index.insert(window, client_id);
-        self.client_index.insert(frame, client_id);
+        self.client_index
+            .insert(window, (client_id, WindowType::App));
+        self.client_index
+            .insert(frame, (client_id, WindowType::Frame));
 
         self.client_container.insert(
             client_id,
@@ -65,13 +59,13 @@ fn create_frame(
     connection: &XCBConnection,
     screen: &Screen,
     visual: &WmVisual,
-    x: i16,
-    y: i16,
-    width: u16,
-    height: u16,
+    config: &WmConfig,
+    geom: &ClientGeometry,
 ) -> Result<(Window, XCBSurface), Box<dyn Error>> {
     let win = connection.generate_id()?;
     let colormap = connection.generate_id()?;
+
+    let frame_geom = geom.to_frame(config);
 
     connection.create_colormap(ColormapAlloc::NONE, colormap, screen.root, visual.visual_id)?;
 
@@ -90,10 +84,10 @@ fn create_frame(
         visual.depth,
         win,
         screen.root,
-        x,
-        y,
-        width,
-        height,
+        frame_geom.x,
+        frame_geom.y,
+        frame_geom.width,
+        frame_geom.height,
         0,
         WindowClass::INPUT_OUTPUT,
         visual.visual_id,
@@ -110,8 +104,8 @@ fn create_frame(
         &cairo_connection,
         &cairo::XCBDrawable(win),
         &visual_type,
-        width as i32,
-        height as i32,
+        frame_geom.width as i32,
+        frame_geom.height as i32,
     )?;
 
     Ok((win, sfc))

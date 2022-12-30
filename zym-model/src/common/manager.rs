@@ -1,12 +1,15 @@
 use std::error::Error;
 
 use x11rb::{
-    protocol::xproto::{ConfigureRequestEvent, Screen, Window},
+    protocol::xproto::{Screen, Window},
     xcb_ffi::XCBConnection,
 };
 use zym_config::WmConfig;
 
-use crate::entity::{client::ClientID, visual::WmVisual};
+use crate::entity::{
+    client::{geometry::ClientGeometry, ClientID, WindowType},
+    visual::WmVisual,
+};
 
 pub trait ClientManagerImpl<'a> {
     fn create(
@@ -21,13 +24,27 @@ pub trait ClientManagerImpl<'a> {
     fn map(
         &self,
         connection: &XCBConnection,
-        client_id: ClientID,
         config: &WmConfig,
+        client_id: ClientID,
     ) -> Result<(), Box<dyn Error>>;
 
-    fn configure(
+    fn move_resize(
         &self,
         connection: &XCBConnection,
-        event: &ConfigureRequestEvent,
+        config: &WmConfig,
+        client_id: ClientID,
+        geom: ClientGeometry,
     ) -> Result<(), Box<dyn Error>>;
+
+    fn configure_window(
+        &self,
+        connection: &XCBConnection,
+        window: Window,
+        x: i16,
+        y: i16,
+        width: u16,
+        height: u16,
+    ) -> Result<(), Box<dyn Error>>;
+
+    fn query(&self, window: Window) -> Option<(ClientID, WindowType)>;
 }

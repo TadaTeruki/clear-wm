@@ -14,12 +14,18 @@ impl<'a> ClientSessionImpl<'a> for WmSession<'a> {
             self.config,
             window,
         )?;
-        self.manager.map(self.connection, client_id, self.config)?;
+        self.manager.map(self.connection, self.config, client_id)?;
         Ok(())
     }
 
     fn configure_window(&self, event: &ConfigureRequestEvent) -> Result<(), Box<dyn Error>> {
-        self.manager.configure(self.connection, event)?;
-        Ok(())
+        self.manager.configure_window(
+            self.connection,
+            event.window,
+            event.x,
+            event.y,
+            event.width,
+            event.height,
+        )
     }
 }

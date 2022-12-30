@@ -16,9 +16,9 @@ pub struct BuildConfig {
 
 #[derive(Deserialize, Debug)]
 pub struct WmFrameConfig {
-    pub titlebar_height: u16,
-    pub border_width: u16,
-    pub border_radius: u16,
+    pub titlebar_height: u32,
+    pub border_width: u32,
+    pub border_radius: u32,
 }
 
 #[derive(Deserialize, Debug)]
