@@ -8,4 +8,5 @@ edition = "2021"
 [dependencies]
 x11rb = { version = "0.11", features = ["allow-unsafe-code", "render"] }
 zym-session = { path = "../zym-session" }
+zym-usecase = { path = "../zym-usecase" }
 log = "0.4"

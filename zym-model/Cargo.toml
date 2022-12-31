@@ -9,5 +9,4 @@ edition.workspace = true
 [dependencies]
 x11rb = { version = "0.11", features = ["allow-unsafe-code", "render"] }
 cairo-rs = { version = "0.16", features = ["xcb"] }
-zym-config = { path = "../zym-config" }
 log = "0.4"

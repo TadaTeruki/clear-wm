@@ -1,72 +1,71 @@
 pub mod create;
+pub mod geometry;
 pub mod map;
 pub mod move_resize;
 
 use std::error::Error;
 
-use x11rb::{
-    protocol::xproto::{ConfigureWindowAux, ConnectionExt, Screen, Window},
-    xcb_ffi::XCBConnection,
-};
-use zym_config::WmConfig;
+use log::warn;
+use x11rb::protocol::xproto::{ConfigureWindowAux, ConnectionExt, Window};
 use zym_model::{
     common::manager::ClientManagerImpl,
     entity::{
-        client::{geometry::ClientGeometry, ClientID, WindowType},
-        visual::WmVisual,
+        client::{ClientID, WindowType},
+        geometry::Geometry,
     },
 };
 
 use crate::manager::WmClientManager;
 
-impl<'a> ClientManagerImpl<'a> for WmClientManager {
-    fn create(
-        &mut self,
-        connection: &XCBConnection,
-        screen: &Screen,
-        visual: &WmVisual,
-        config: &WmConfig,
-        window: Window,
-    ) -> Result<ClientID, Box<dyn Error>> {
-        self.create_client(connection, screen, visual, config, window)
+use self::geometry::ClientGeometry;
+
+impl<'a> ClientManagerImpl<'a> for WmClientManager<'a> {
+    fn create(&mut self, window: Window) -> Result<ClientID, Box<dyn Error>> {
+        self.create_client(window)
     }
 
-    fn map(
-        &self,
-        connection: &XCBConnection,
-        config: &WmConfig,
-        client_id: ClientID,
-    ) -> Result<(), Box<dyn Error>> {
-        self.map_client(connection, config, client_id)
+    fn map(&self, client_id: ClientID) -> Result<(), Box<dyn Error>> {
+        if let Some(client) = self.client_container.get(&client_id) {
+            self.map_client(client)?
+        } else {
+            warn!("client not found");
+        }
+        Ok(())
     }
 
     fn move_resize(
         &self,
-        connection: &XCBConnection,
-        config: &WmConfig,
         client_id: ClientID,
-        geom: ClientGeometry,
+        geom: Geometry,
+        window_type: WindowType,
     ) -> Result<(), Box<dyn Error>> {
-        self.move_resize_client(connection, config, client_id, geom)
+        if let Some(client) = self.client_container.get(&client_id) {
+            match window_type {
+                WindowType::Frame => {
+                    self.move_resize_client(client, ClientGeometry::from_frame(geom, self.config))?;
+                }
+                _ => {
+                    warn!(
+                        "unable client to move or resize. (window type: {:?})",
+                        window_type
+                    );
+                }
+            }
+        } else {
+            warn!("client not found");
+        }
+        Ok(())
     }
 
-    fn configure_window(
-        &self,
-        connection: &XCBConnection,
-        window: Window,
-        x: i16,
-        y: i16,
-        width: u16,
-        height: u16,
-    ) -> Result<(), Box<dyn Error>> {
+    fn configure_window(&self, window: Window, geom: Geometry) -> Result<(), Box<dyn Error>> {
         let aux = ConfigureWindowAux::new()
-            .x(x as i32)
-            .y(y as i32)
-            .width(width as u32)
-            .height(height as u32)
+            .x(geom.x as i32)
+            .y(geom.y as i32)
+            .width(geom.width as u32)
+            .height(geom.height as u32)
             .sibling(None)
             .stack_mode(None);
-        connection.configure_window(window, &aux)?;
+        self.connection.configure_window(window, &aux)?;
         Ok(())
     }
 

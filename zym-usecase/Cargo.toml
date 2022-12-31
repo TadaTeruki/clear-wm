@@ -1,12 +1,10 @@
 [package]
-name = "zym-session"
-version.workspace = true
-authors.workspace = true
-edition.workspace = true
+name = "zym-usecase"
+version = "0.1.0"
+edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 x11rb = { version = "0.11", features = ["allow-unsafe-code", "render"] }
-cairo-rs = { version = "0.16", features = ["xcb"] }
-log = "0.4"
+zym-model = { path = "../zym-model" }

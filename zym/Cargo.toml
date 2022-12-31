@@ -10,9 +10,10 @@ edition.workspace = true
 x11rb = { version = "0.11", features = ["allow-unsafe-code", "render"] }
 cairo-rs = { version = "0.16", features = ["xcb"] }
 zym-session = { path = "../zym-session" }
-zym-controller = { path = "../zym-controller" }
 zym-logger = { path = "../zym-logger" }
 zym-model = { path = "../zym-model" }
+zym-controller = { path = "../zym-controller" }
 zym-manager = { path = "../zym-manager" }
 zym-config = { path = "../zym-config" }
+zym-usecase = { path = "../zym-usecase" }
 log = "0.4"
