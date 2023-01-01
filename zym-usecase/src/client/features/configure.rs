@@ -3,7 +3,7 @@ use std::error::Error;
 use x11rb::protocol::xproto::Window;
 use zym_model::entity::geometry::Geometry;
 
-use super::WmClientUseCase;
+use crate::client::usecase::WmClientUseCase;
 
 impl<'a> WmClientUseCase<'a> {
     pub fn configure_window(

@@ -2,7 +2,7 @@ use std::error::Error;
 
 use x11rb::protocol::xproto::Window;
 
-use super::WmClientUseCase;
+use crate::client::usecase::WmClientUseCase;
 
 impl<'a> WmClientUseCase<'a> {
     pub fn compose_client(&mut self, window: Window) -> Result<(), Box<dyn Error>> {

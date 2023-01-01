@@ -10,7 +10,7 @@ use zym_listener::event_listener::WmEventListener;
 use zym_logger::WmLogger;
 use zym_manager::client::manager::WmClientManager;
 use zym_model::entity::visual::WmVisual;
-use zym_usecase::client::WmClientUseCase;
+use zym_usecase::client::usecase::WmClientUseCase;
 
 static LOGGER: WmLogger = WmLogger;
 
