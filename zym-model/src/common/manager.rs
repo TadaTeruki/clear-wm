@@ -53,6 +53,10 @@ pub trait ClientManagerImpl<'a> {
     fn get_focus(&self) -> Result<Option<ClientID>, Box<dyn Error>>;
 
     fn raise(&self, client_id: ClientID) -> Result<(), Box<dyn Error>>;
+
+    fn grab(&self, client_id: ClientID) -> Result<(), Box<dyn Error>>;
+
+    fn ungrab(&self, client_id: ClientID) -> Result<(), Box<dyn Error>>;
 }
 
 pub trait CursorManagerImpl {

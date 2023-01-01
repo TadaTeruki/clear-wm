@@ -1,6 +1,7 @@
 pub mod create;
 pub mod focus;
 pub mod get_geometry;
+pub mod grab;
 pub mod map;
 pub mod move_resize;
 pub mod raise;
@@ -117,5 +118,13 @@ impl<'a> ClientManagerImpl<'a> for WmClientManager<'a> {
 
     fn raise(&self, client_id: ClientID) -> Result<(), Box<dyn Error>> {
         self.raise_client(client_id)
+    }
+
+    fn grab(&self, client_id: ClientID) -> Result<(), Box<dyn Error>> {
+        self.grab_client(client_id)
+    }
+
+    fn ungrab(&self, client_id: ClientID) -> Result<(), Box<dyn Error>> {
+        self.ungrab_client(client_id)
     }
 }
