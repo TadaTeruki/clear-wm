@@ -1,7 +1,4 @@
-use zym_model::{
-    common::manager::{ClientManagerImpl, CursorManagerImpl},
-    entity::client::ClientID,
-};
+use zym_model::{common::manager::CursorManagerImpl, entity::client::ClientID};
 
 struct WmClientDragInfo {
     client_id: ClientID,
