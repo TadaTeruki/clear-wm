@@ -47,8 +47,8 @@ impl<'a> ClientManagerImpl<'a> for WmClientManager<'a> {
     fn move_to(
         &self,
         client_id: ClientID,
-        x_: i16,
-        y_: i16,
+        x_: i32,
+        y_: i32,
         window_type: WindowType,
     ) -> Result<(), Box<dyn Error>> {
         self.move_resize_client(
@@ -67,8 +67,8 @@ impl<'a> ClientManagerImpl<'a> for WmClientManager<'a> {
     fn resize(
         &self,
         client_id: ClientID,
-        width_: u16,
-        height_: u16,
+        width_: i32,
+        height_: i32,
         window_type: WindowType,
     ) -> Result<(), Box<dyn Error>> {
         self.move_resize_client(

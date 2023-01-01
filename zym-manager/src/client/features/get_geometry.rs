@@ -33,10 +33,10 @@ impl<'a> WmClientManager<'a> {
         };
 
         Ok(Some(Geometry {
-            x: geom.x,
-            y: geom.y,
-            width: geom.width,
-            height: geom.height,
+            x: geom.x.into(),
+            y: geom.y.into(),
+            width: geom.width.into(),
+            height: geom.height.into(),
         }))
     }
 }

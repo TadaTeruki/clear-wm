@@ -43,8 +43,8 @@ impl<'a> WmClientManager<'a> {
             return Ok(());
         }
 
-        let frame_geom = client_geom.to_frame(self.config);
-        let app_geom = client_geom.to_app_relative(self.config);
+        let frame_geom = client_geom.to_frame(self.config).for_system_api()?;
+        let app_geom = client_geom.to_app_relative(self.config).for_system_api()?;
 
         self.connection.grab_server()?;
 

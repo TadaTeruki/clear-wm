@@ -4,6 +4,7 @@ use x11rb::protocol::xproto::Window;
 
 use crate::entity::{
     client::{ClientID, WindowType},
+    cursor::WmCursorDragInfo,
     geometry::Geometry,
 };
 
@@ -28,16 +29,16 @@ pub trait ClientManagerImpl<'a> {
     fn move_to(
         &self,
         client_id: ClientID,
-        x: i16,
-        y: i16,
+        x: i32,
+        y: i32,
         window_type: WindowType,
     ) -> Result<(), Box<dyn Error>>;
 
     fn resize(
         &self,
         client_id: ClientID,
-        width: u16,
-        height: u16,
+        width: i32,
+        height: i32,
         window_type: WindowType,
     ) -> Result<(), Box<dyn Error>>;
 
@@ -47,9 +48,9 @@ pub trait ClientManagerImpl<'a> {
 }
 
 pub trait CursorManagerImpl {
-    fn start_to_drag_client(&mut self, client_id: ClientID);
+    fn start_to_drag_client(&mut self, client_id_: ClientID, relative_x_: i32, relative_y_: i32);
 
-    fn get_dragging_client(&self) -> Option<ClientID>;
+    fn get_drag_info(&self) -> Option<WmCursorDragInfo>;
 
     fn release_dragging_client(&mut self);
 }

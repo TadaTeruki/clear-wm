@@ -4,7 +4,11 @@ use x11rb::protocol::xproto::MotionNotifyEvent;
 use super::WmHandler;
 
 impl<'a> WmHandler<'a> {
-    pub fn handle_motion_notify(&self, _event: &MotionNotifyEvent) -> Result<(), Box<dyn Error>> {
-        Ok(())
+    pub fn handle_motion_notify(
+        &mut self,
+        event: &MotionNotifyEvent,
+    ) -> Result<(), Box<dyn Error>> {
+        self.client_usecase
+            .drag_client(event.root_x.into(), event.root_y.into())
     }
 }

@@ -2,11 +2,12 @@ use std::cmp::max;
 use zym_config::WmConfig;
 use zym_model::entity::geometry::Geometry;
 
+#[derive(Debug, Clone, Copy)]
 pub struct ClientGeometry {
-    pub x: i16,
-    pub y: i16,
-    pub width: u16,
-    pub height: u16,
+    pub x: i32,
+    pub y: i32,
+    pub width: i32,
+    pub height: i32,
 }
 
 impl ClientGeometry {
@@ -15,9 +16,9 @@ impl ClientGeometry {
 
         Self {
             x: geom.x,
-            y: geom.y - titlebar_height as i16,
+            y: geom.y - titlebar_height as i32,
             width: geom.width,
-            height: geom.height + titlebar_height as u16,
+            height: geom.height + titlebar_height as i32,
         }
     }
 
@@ -25,10 +26,10 @@ impl ClientGeometry {
         let border_width = config.client.frame.border_width;
 
         Self {
-            x: geom.x + border_width as i16,
-            y: geom.y + border_width as i16,
-            width: geom.width - border_width as u16 * 2,
-            height: geom.height - border_width as u16 * 2,
+            x: geom.x + border_width as i32,
+            y: geom.y + border_width as i32,
+            width: geom.width - border_width as i32 * 2,
+            height: geom.height - border_width as i32 * 2,
         }
     }
 
@@ -36,10 +37,10 @@ impl ClientGeometry {
         let border_width = config.client.frame.border_width;
 
         Geometry {
-            x: self.x - border_width as i16,
-            y: self.y - border_width as i16,
-            width: self.width + border_width as u16 * 2,
-            height: self.height + border_width as u16 * 2,
+            x: self.x - border_width as i32,
+            y: self.y - border_width as i32,
+            width: self.width + border_width as i32 * 2,
+            height: self.height + border_width as i32 * 2,
         }
     }
 
@@ -48,10 +49,10 @@ impl ClientGeometry {
         let titlebar_height = config.client.frame.titlebar_height;
 
         Geometry {
-            x: border_width as i16,
-            y: border_width as i16 + titlebar_height as i16,
+            x: border_width as i32,
+            y: border_width as i32 + titlebar_height as i32,
             width: self.width,
-            height: self.height - titlebar_height as u16,
+            height: self.height - titlebar_height as i32,
         }
     }
 
@@ -65,11 +66,11 @@ impl ClientGeometry {
     }
 }
 
-pub fn app_relative_position(config: &WmConfig) -> (i16, i16) {
+pub fn app_relative_position(config: &WmConfig) -> (i32, i32) {
     let border_width = config.client.frame.border_width;
     let titlebar_height = config.client.frame.titlebar_height;
     (
-        border_width as i16,
-        border_width as i16 + titlebar_height as i16,
+        border_width as i32,
+        border_width as i32 + titlebar_height as i32,
     )
 }

@@ -24,7 +24,7 @@ impl<'a> WmClientManager<'a> {
         let (rx, ry) = app_relative_position(self.config);
 
         self.connection
-            .reparent_window(client.app, client.frame, rx, ry)?;
+            .reparent_window(client.app, client.frame, rx as i16, ry as i16)?;
         self.connection.map_window(client.frame)?;
         self.connection.map_window(client.app)?;
         self.connection.ungrab_server()?;

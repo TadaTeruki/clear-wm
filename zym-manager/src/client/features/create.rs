@@ -20,10 +20,10 @@ impl<'a> WmClientManager<'a> {
             let g = self.connection.get_geometry(window)?.reply()?;
             ClientGeometry::from_app_absolute(
                 Geometry {
-                    x: g.x,
-                    y: g.y,
-                    width: g.width,
-                    height: g.height,
+                    x: g.x.into(),
+                    y: g.y.into(),
+                    width: g.width.into(),
+                    height: g.height.into(),
                 },
                 self.config,
             )
@@ -60,8 +60,6 @@ impl<'a> WmClientManager<'a> {
         let win = self.connection.generate_id()?;
         let colormap = self.connection.generate_id()?;
 
-        let frame_geom = geom.to_frame(self.config);
-
         self.connection.create_colormap(
             ColormapAlloc::NONE,
             colormap,
@@ -79,6 +77,8 @@ impl<'a> WmClientManager<'a> {
                     | EventMask::ENTER_WINDOW,
             )
             .background_pixel(self.screen.white_pixel);
+
+        let frame_geom = geom.to_frame(self.config).for_system_api()?;
 
         self.connection.create_window(
             self.visual.depth,

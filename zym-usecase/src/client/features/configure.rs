@@ -9,10 +9,10 @@ impl<'a> WmClientUseCase<'a> {
     pub fn configure_window(
         &self,
         window: Window,
-        x_: i16,
-        y_: i16,
-        width_: u16,
-        height_: u16,
+        x_: i32,
+        y_: i32,
+        width_: i32,
+        height_: i32,
     ) -> Result<(), Box<dyn Error>> {
         self.client_manager.configure_window(
             window,

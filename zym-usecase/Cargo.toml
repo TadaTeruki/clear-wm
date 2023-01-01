@@ -9,3 +9,4 @@ edition.workspace = true
 [dependencies]
 x11rb = { version = "0.11", features = ["allow-unsafe-code", "render"] }
 zym-model = { path = "../zym-model" }
+log = "0.4"

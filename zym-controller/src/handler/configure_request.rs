@@ -10,10 +10,10 @@ impl<'a> WmHandler<'a> {
     ) -> Result<(), Box<dyn Error>> {
         self.client_usecase.configure_window(
             event.window,
-            event.x,
-            event.y,
-            event.width,
-            event.height,
+            event.x.into(),
+            event.y.into(),
+            event.width.into(),
+            event.height.into(),
         )?;
         Ok(())
     }
