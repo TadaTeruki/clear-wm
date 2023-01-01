@@ -15,15 +15,21 @@ pub struct BuildConfig {
 }
 
 #[derive(Deserialize, Debug)]
+pub struct WmControlConfig {
+    pub drag_corner_width: i32,
+}
+
+#[derive(Deserialize, Debug)]
 pub struct WmFrameConfig {
-    pub titlebar_height: u32,
-    pub border_width: u32,
-    pub border_radius: u32,
+    pub titlebar_height: i32,
+    pub border_width: i32,
+    pub border_radius: i32,
 }
 
 #[derive(Deserialize, Debug)]
 pub struct WmClientConfig {
     pub frame: WmFrameConfig,
+    pub control: WmControlConfig,
 }
 
 #[derive(Deserialize, Debug)]

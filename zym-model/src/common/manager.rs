@@ -48,7 +48,13 @@ pub trait ClientManagerImpl<'a> {
 }
 
 pub trait CursorManagerImpl {
-    fn start_to_drag_client(&mut self, client_id_: ClientID, relative_x_: i32, relative_y_: i32);
+    fn start_to_drag_client(
+        &mut self,
+        client_id_: ClientID,
+        relative_x_: i32,
+        relative_y_: i32,
+        first_frame_geom: Geometry,
+    );
 
     fn get_drag_info(&self) -> Option<WmCursorDragInfo>;
 

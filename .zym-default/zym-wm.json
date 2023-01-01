@@ -2,8 +2,12 @@
     "client": {
         "frame": {
             "titlebar_height": 20,
-            "border_width" : 5,
+            "border_width" : 10,
             "border_radius": 5
+        },
+
+        "control": {
+            "drag_corner_width": 20
         }
     }
 }

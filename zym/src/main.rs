@@ -34,7 +34,7 @@ fn main() {
     let visual = WmVisual::new(&connection, screen).unwrap();
 
     let mut client_manager = WmClientManager::new(&connection, screen, &visual, config.wm_config());
-    let mut cursor_manager = WmCursorManager::new();
+    let mut cursor_manager = WmCursorManager::new(config.wm_config());
     let mut client_usecase = WmClientUseCase::new(&mut client_manager, &mut cursor_manager);
     let mut client_handler = WmHandler::new(&mut client_usecase);
 
