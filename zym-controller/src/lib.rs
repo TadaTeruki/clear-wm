@@ -31,6 +31,7 @@ pub fn event_loop<'a, EL: EventListenerImpl<'a>>(
         match event {
             Event::ButtonPress(event) => handler.handle_button_press(&event)?,
             Event::ButtonRelease(event) => handler.handle_button_release(&event)?,
+            Event::ClientMessage(event) => handler.handle_client_message(&event)?,
             Event::ConfigureRequest(event) => handler.handle_configure_request(&event)?,
             Event::EnterNotify(event) => handler.handle_enter_notify(&event)?,
             Event::Expose(event) => handler.handle_expose(&event)?,

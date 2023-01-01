@@ -1,5 +1,6 @@
 pub mod button_press;
 pub mod button_release;
+pub mod client_message;
 pub mod configure_request;
 pub mod enter_notify;
 pub mod expose;
