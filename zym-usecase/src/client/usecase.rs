@@ -26,6 +26,7 @@ impl<'a> ClientUseCaseImpl<'a> for WmClientUseCase<'a> {
     fn compose_client(&mut self, window: Window) -> Result<(), Box<dyn Error>> {
         self.compose_client(window)
     }
+
     fn configure_window(
         &self,
         window: Window,
@@ -56,5 +57,9 @@ impl<'a> ClientUseCaseImpl<'a> for WmClientUseCase<'a> {
 
     fn remove_client(&mut self, window: Window) -> Result<(), Box<dyn Error>> {
         self.remove_client(window)
+    }
+
+    fn activate_client(&self, window: Window) -> Result<(), Box<dyn Error>> {
+        self.activate_client(window)
     }
 }

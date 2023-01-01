@@ -17,7 +17,7 @@ impl<'a> WmClientUseCase<'a> {
         if let Some((client_id, WindowType::ComposedApp)) = self.client_manager.query(window) {
             self.client_manager.remove(client_id)?
         } else {
-            warn!("client not found");
+            warn!("window not managed");
         }
         Ok(())
     }

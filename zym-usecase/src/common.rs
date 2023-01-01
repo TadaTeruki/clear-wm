@@ -26,4 +26,6 @@ pub trait ClientUseCaseImpl<'a> {
     fn release_dragging_client(&mut self) -> Result<(), Box<dyn Error>>;
 
     fn remove_client(&mut self, window: Window) -> Result<(), Box<dyn Error>>;
+
+    fn activate_client(&self, window: Window) -> Result<(), Box<dyn Error>>;
 }

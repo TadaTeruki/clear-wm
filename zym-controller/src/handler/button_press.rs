@@ -9,6 +9,8 @@ impl<'a> WmHandler<'a> {
             event.event,
             event.event_x.into(),
             event.event_y.into(),
-        )
+        )?;
+        self.client_usecase.activate_client(event.event)?;
+        Ok(())
     }
 }

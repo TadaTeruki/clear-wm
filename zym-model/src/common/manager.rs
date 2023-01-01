@@ -47,6 +47,12 @@ pub trait ClientManagerImpl<'a> {
     fn query(&self, window: Window) -> Option<(ClientID, WindowType)>;
 
     fn remove(&mut self, client_id: ClientID) -> Result<(), Box<dyn Error>>;
+
+    fn set_focus(&self, client_id: ClientID) -> Result<(), Box<dyn Error>>;
+
+    fn get_focus(&self) -> Result<Option<ClientID>, Box<dyn Error>>;
+
+    fn raise(&self, client_id: ClientID) -> Result<(), Box<dyn Error>>;
 }
 
 pub trait CursorManagerImpl {

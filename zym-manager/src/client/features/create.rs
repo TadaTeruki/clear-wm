@@ -4,7 +4,8 @@ use cairo::XCBSurface;
 use x11rb::{
     connection::Connection,
     protocol::xproto::{
-        ColormapAlloc, ConnectionExt, CreateWindowAux, EventMask, Window, WindowClass,
+        ChangeWindowAttributesAux, ColormapAlloc, ConnectionExt, CreateWindowAux, EventMask,
+        Window, WindowClass,
     },
 };
 use zym_model::entity::{
@@ -12,7 +13,10 @@ use zym_model::entity::{
     geometry::Geometry,
 };
 
-use crate::client::{geometry::ClientGeometry, manager::WmClientManager};
+use crate::client::{
+    geometry::{app_relative_position, ClientGeometry},
+    manager::WmClientManager,
+};
 
 impl<'a> WmClientManager<'a> {
     pub fn create_client(&mut self, window: Window) -> Result<ClientID, Box<dyn Error>> {
@@ -31,6 +35,16 @@ impl<'a> WmClientManager<'a> {
         };
 
         let (frame, frame_surface) = { self.create_frame(&app_geom)? };
+
+        let (rx, ry) = app_relative_position(self.config);
+
+        self.connection
+            .reparent_window(window, frame, rx as i16, ry as i16)?;
+
+        self.connection.change_window_attributes(
+            window,
+            &ChangeWindowAttributesAux::new().event_mask(EventMask::BUTTON_PRESS),
+        )?;
 
         let mut client_id = self.last_client_id;
 

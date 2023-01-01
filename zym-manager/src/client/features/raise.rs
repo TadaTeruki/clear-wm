@@ -1,13 +1,13 @@
 use std::error::Error;
 
 use log::warn;
-use x11rb::protocol::xproto::{ConnectionExt, SetMode};
+use x11rb::protocol::xproto::{ConfigureWindowAux, ConnectionExt, StackMode};
 use zym_model::entity::client::ClientID;
 
 use crate::client::manager::WmClientManager;
 
 impl<'a> WmClientManager<'a> {
-    pub fn map_client(&self, client_id: ClientID) -> Result<(), Box<dyn Error>> {
+    pub fn raise_client(&self, client_id: ClientID) -> Result<(), Box<dyn Error>> {
         let client = {
             if let Some(client_) = self.client_container.get(&client_id) {
                 client_
@@ -17,12 +17,11 @@ impl<'a> WmClientManager<'a> {
             }
         };
 
-        self.connection.grab_server()?;
-        self.connection
-            .change_save_set(SetMode::INSERT, client.app)?;
-        self.connection.map_window(client.frame)?;
-        self.connection.map_window(client.app)?;
-        self.connection.ungrab_server()?;
+        self.connection.configure_window(
+            client.frame,
+            &ConfigureWindowAux::new().stack_mode(StackMode::ABOVE),
+        )?;
+
         Ok(())
     }
 }

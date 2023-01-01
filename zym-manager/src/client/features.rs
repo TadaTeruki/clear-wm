@@ -1,7 +1,9 @@
 pub mod create;
+pub mod focus;
 pub mod get_geometry;
 pub mod map;
 pub mod move_resize;
+pub mod raise;
 pub mod remove;
 
 use std::error::Error;
@@ -103,5 +105,17 @@ impl<'a> ClientManagerImpl<'a> for WmClientManager<'a> {
 
     fn remove(&mut self, client_id: ClientID) -> Result<(), Box<dyn Error>> {
         self.remove_client(client_id)
+    }
+
+    fn set_focus(&self, client_id: ClientID) -> Result<(), Box<dyn Error>> {
+        self.set_client_focus(client_id)
+    }
+
+    fn get_focus(&self) -> Result<Option<ClientID>, Box<dyn Error>> {
+        self.get_client_focus()
+    }
+
+    fn raise(&self, client_id: ClientID) -> Result<(), Box<dyn Error>> {
+        self.raise_client(client_id)
     }
 }
