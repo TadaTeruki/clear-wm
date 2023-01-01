@@ -5,9 +5,9 @@ use std::error::Error;
 use handler::WmHandler;
 use log::{error, info};
 use x11rb::protocol::Event;
-use zym_session::common::EventListenerImpl;
+use zym_listener::common::EventListenerImpl;
 
-pub fn start_session<'a, EL: EventListenerImpl<'a>>(
+pub fn start_listener<'a, EL: EventListenerImpl<'a>>(
     listener: &mut EL,
     handler: &mut WmHandler<'a>,
 ) {

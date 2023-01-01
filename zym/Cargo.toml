@@ -9,7 +9,7 @@ edition.workspace = true
 [dependencies]
 x11rb = { version = "0.11", features = ["allow-unsafe-code", "render"] }
 cairo-rs = { version = "0.16", features = ["xcb"] }
-zym-session = { path = "../zym-session" }
+zym-listener = { path = "../zym-listener" }
 zym-logger = { path = "../zym-logger" }
 zym-model = { path = "../zym-model" }
 zym-controller = { path = "../zym-controller" }

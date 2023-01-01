@@ -768,10 +768,10 @@ dependencies = [
  "x11rb",
  "zym-config",
  "zym-controller",
+ "zym-listener",
  "zym-logger",
  "zym-manager",
  "zym-model",
- "zym-session",
  "zym-usecase",
 ]
 
@@ -789,8 +789,17 @@ version = "0.1.0"
 dependencies = [
  "log",
  "x11rb",
- "zym-session",
+ "zym-listener",
  "zym-usecase",
+]
+
+[[package]]
+name = "zym-listener"
+version = "0.1.0"
+dependencies = [
+ "cairo-rs",
+ "log",
+ "x11rb",
 ]
 
 [[package]]
@@ -815,15 +824,6 @@ dependencies = [
 
 [[package]]
 name = "zym-model"
-version = "0.1.0"
-dependencies = [
- "cairo-rs",
- "log",
- "x11rb",
-]
-
-[[package]]
-name = "zym-session"
 version = "0.1.0"
 dependencies = [
  "cairo-rs",

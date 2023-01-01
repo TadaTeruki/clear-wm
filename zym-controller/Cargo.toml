@@ -1,12 +1,13 @@
 [package]
 name = "zym-controller"
-version = "0.1.0"
-edition = "2021"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 x11rb = { version = "0.11", features = ["allow-unsafe-code", "render"] }
-zym-session = { path = "../zym-session" }
+zym-listener = { path = "../zym-listener" }
 zym-usecase = { path = "../zym-usecase" }
 log = "0.4"

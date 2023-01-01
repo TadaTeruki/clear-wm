@@ -1,5 +1,5 @@
 [package]
-name = "zym-session"
+name = "zym-listener"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true

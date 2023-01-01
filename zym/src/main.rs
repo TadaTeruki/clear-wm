@@ -5,11 +5,11 @@ use x11rb::{
     xcb_ffi::XCBConnection,
 };
 use zym_config::Config;
-use zym_controller::{handler::WmHandler, start_session};
+use zym_controller::{handler::WmHandler, start_listener};
+use zym_listener::event_listener::WmEventListener;
 use zym_logger::WmLogger;
 use zym_manager::manager::WmClientManager;
 use zym_model::entity::visual::WmVisual;
-use zym_session::event_listener::WmEventListener;
 use zym_usecase::client::WmClientUseCase;
 
 static LOGGER: WmLogger = WmLogger;
@@ -37,7 +37,7 @@ fn main() {
     let mut client_usecase = WmClientUseCase::new(&mut client_manager);
     let mut client_handler = WmHandler::new(&mut client_usecase);
 
-    let mut session = WmEventListener::new(&connection).unwrap();
+    let mut listener = WmEventListener::new(&connection).unwrap();
 
-    start_session(&mut session, &mut client_handler);
+    start_listener(&mut listener, &mut client_handler);
 }
