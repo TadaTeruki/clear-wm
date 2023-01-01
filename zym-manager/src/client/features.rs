@@ -2,6 +2,7 @@ pub mod create;
 pub mod get_geometry;
 pub mod map;
 pub mod move_resize;
+pub mod remove;
 
 use std::error::Error;
 
@@ -98,5 +99,9 @@ impl<'a> ClientManagerImpl<'a> for WmClientManager<'a> {
 
     fn query(&self, window: Window) -> Option<(ClientID, WindowType)> {
         self.client_index.get(&window).copied()
+    }
+
+    fn remove(&mut self, client_id: ClientID) -> Result<(), Box<dyn Error>> {
+        self.remove_client(client_id)
     }
 }

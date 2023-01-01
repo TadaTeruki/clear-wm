@@ -7,7 +7,7 @@
         },
 
         "control": {
-            "drag_corner_width": 20
+            "drag_corner_width": 12
         }
     }
 }

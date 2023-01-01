@@ -24,4 +24,6 @@ pub trait ClientUseCaseImpl<'a> {
     fn drag_client(&mut self, cursor_x: i32, cursor_y: i32) -> Result<(), Box<dyn Error>>;
 
     fn release_dragging_client(&mut self) -> Result<(), Box<dyn Error>>;
+
+    fn remove_client(&mut self, window: Window) -> Result<(), Box<dyn Error>>;
 }

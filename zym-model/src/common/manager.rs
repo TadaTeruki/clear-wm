@@ -45,6 +45,8 @@ pub trait ClientManagerImpl<'a> {
     fn configure_window(&self, window: Window, geom: Geometry) -> Result<(), Box<dyn Error>>;
 
     fn query(&self, window: Window) -> Option<(ClientID, WindowType)>;
+
+    fn remove(&mut self, client_id: ClientID) -> Result<(), Box<dyn Error>>;
 }
 
 pub trait CursorManagerImpl {

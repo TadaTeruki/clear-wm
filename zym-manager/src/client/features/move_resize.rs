@@ -58,12 +58,9 @@ impl<'a> WmClientManager<'a> {
                         .width(frame_geom.width as u32)
                         .height(frame_geom.height as u32),
                 )?;
-
                 self.connection.configure_window(
                     client.app,
                     &ConfigureWindowAux::new()
-                        .x(app_geom.x as i32)
-                        .y(app_geom.y as i32)
                         .width(app_geom.width as u32)
                         .height(app_geom.height as u32),
                 )?;
@@ -75,13 +72,6 @@ impl<'a> WmClientManager<'a> {
                         .x(frame_geom.x as i32)
                         .y(frame_geom.y as i32),
                 )?;
-
-                self.connection.configure_window(
-                    client.app,
-                    &ConfigureWindowAux::new()
-                        .x(app_geom.x as i32)
-                        .y(app_geom.y as i32),
-                )?;
             }
             WmMoveResizeMask::Resize => {
                 self.connection.configure_window(
@@ -90,7 +80,6 @@ impl<'a> WmClientManager<'a> {
                         .width(frame_geom.width as u32)
                         .height(frame_geom.height as u32),
                 )?;
-
                 self.connection.configure_window(
                     client.app,
                     &ConfigureWindowAux::new()

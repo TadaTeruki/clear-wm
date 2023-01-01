@@ -53,4 +53,8 @@ impl<'a> ClientUseCaseImpl<'a> for WmClientUseCase<'a> {
     fn release_dragging_client(&mut self) -> Result<(), Box<dyn Error>> {
         self.release_dragging_client()
     }
+
+    fn remove_client(&mut self, window: Window) -> Result<(), Box<dyn Error>> {
+        self.remove_client(window)
+    }
 }
