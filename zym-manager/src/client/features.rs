@@ -1,10 +1,10 @@
 pub mod create;
+pub mod get_geometry;
 pub mod map;
 pub mod move_resize;
 
 use std::error::Error;
 
-use log::warn;
 use x11rb::protocol::xproto::{ConfigureWindowAux, ConnectionExt, Window};
 use zym_model::{
     common::manager::ClientManagerImpl,
@@ -14,7 +14,9 @@ use zym_model::{
     },
 };
 
-use super::{geometry::ClientGeometry, manager::WmClientManager};
+use self::move_resize::WmMoveResizeMask;
+
+use super::manager::WmClientManager;
 
 impl<'a> ClientManagerImpl<'a> for WmClientManager<'a> {
     fn create(&mut self, window: Window) -> Result<ClientID, Box<dyn Error>> {
@@ -22,12 +24,15 @@ impl<'a> ClientManagerImpl<'a> for WmClientManager<'a> {
     }
 
     fn map(&self, client_id: ClientID) -> Result<(), Box<dyn Error>> {
-        if let Some(client) = self.client_container.get(&client_id) {
-            self.map_client(client)?
-        } else {
-            warn!("client not found");
-        }
-        Ok(())
+        self.map_client(client_id)
+    }
+
+    fn get_geometry(
+        &self,
+        client_id: ClientID,
+        window_type: WindowType,
+    ) -> Result<Option<Geometry>, Box<dyn Error>> {
+        self.get_client_geometry(client_id, window_type)
     }
 
     fn move_resize(
@@ -36,22 +41,47 @@ impl<'a> ClientManagerImpl<'a> for WmClientManager<'a> {
         geom: Geometry,
         window_type: WindowType,
     ) -> Result<(), Box<dyn Error>> {
-        if let Some(client) = self.client_container.get(&client_id) {
-            match window_type {
-                WindowType::Frame => {
-                    self.move_resize_client(client, ClientGeometry::from_frame(geom, self.config))?;
-                }
-                _ => {
-                    warn!(
-                        "unable client to move or resize. (window type: {:?})",
-                        window_type
-                    );
-                }
-            }
-        } else {
-            warn!("client not found");
-        }
-        Ok(())
+        self.move_resize_client(client_id, geom, window_type, WmMoveResizeMask::MoveResize)
+    }
+
+    fn move_to(
+        &self,
+        client_id: ClientID,
+        x_: i16,
+        y_: i16,
+        window_type: WindowType,
+    ) -> Result<(), Box<dyn Error>> {
+        self.move_resize_client(
+            client_id,
+            Geometry {
+                x: x_,
+                y: y_,
+                width: 0,
+                height: 0,
+            },
+            window_type,
+            WmMoveResizeMask::Move,
+        )
+    }
+
+    fn resize(
+        &self,
+        client_id: ClientID,
+        width_: u16,
+        height_: u16,
+        window_type: WindowType,
+    ) -> Result<(), Box<dyn Error>> {
+        self.move_resize_client(
+            client_id,
+            Geometry {
+                x: 0,
+                y: 0,
+                width: width_,
+                height: height_,
+            },
+            window_type,
+            WmMoveResizeMask::Resize,
+        )
     }
 
     fn configure_window(&self, window: Window, geom: Geometry) -> Result<(), Box<dyn Error>> {

@@ -27,6 +27,7 @@ impl<'a> WmClientManager<'a> {
                 },
                 self.config,
             )
+            .fix_position()
         };
 
         let (frame, frame_surface) = { self.create_frame(&app_geom)? };

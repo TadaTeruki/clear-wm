@@ -1,3 +1,4 @@
+use std::cmp::max;
 use zym_config::WmConfig;
 use zym_model::entity::geometry::Geometry;
 
@@ -51,6 +52,15 @@ impl ClientGeometry {
             y: border_width as i16 + titlebar_height as i16,
             width: self.width,
             height: self.height - titlebar_height as u16,
+        }
+    }
+
+    pub fn fix_position(&self) -> Self {
+        Self {
+            x: max(self.x, 0),
+            y: max(self.y, 0),
+            width: self.width,
+            height: self.height,
         }
     }
 }
