@@ -12,9 +12,7 @@ use zym_model::entity::{
     geometry::Geometry,
 };
 
-use crate::manager::WmClientManager;
-
-use super::geometry::ClientGeometry;
+use crate::client::{geometry::ClientGeometry, manager::WmClientManager};
 
 impl<'a> WmClientManager<'a> {
     pub fn create_client(&mut self, window: Window) -> Result<ClientID, Box<dyn Error>> {

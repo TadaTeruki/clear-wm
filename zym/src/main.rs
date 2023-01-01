@@ -8,7 +8,7 @@ use zym_config::Config;
 use zym_controller::{handler::WmHandler, start_listener};
 use zym_listener::event_listener::WmEventListener;
 use zym_logger::WmLogger;
-use zym_manager::manager::WmClientManager;
+use zym_manager::client::manager::WmClientManager;
 use zym_model::entity::visual::WmVisual;
 use zym_usecase::client::WmClientUseCase;
 

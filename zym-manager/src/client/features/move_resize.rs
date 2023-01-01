@@ -3,9 +3,7 @@ use std::error::Error;
 use x11rb::protocol::xproto::{ConfigureWindowAux, ConnectionExt};
 use zym_model::entity::client::WmClient;
 
-use crate::manager::WmClientManager;
-
-use super::geometry::ClientGeometry;
+use crate::client::{geometry::ClientGeometry, manager::WmClientManager};
 
 impl<'a> WmClientManager<'a> {
     pub fn move_resize_client(

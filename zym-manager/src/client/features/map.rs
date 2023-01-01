@@ -3,9 +3,7 @@ use std::error::Error;
 use x11rb::protocol::xproto::{ConnectionExt, SetMode};
 use zym_model::entity::client::WmClient;
 
-use crate::manager::WmClientManager;
-
-use super::geometry::app_relative_position;
+use crate::client::{geometry::app_relative_position, manager::WmClientManager};
 
 impl<'a> WmClientManager<'a> {
     pub fn map_client(&self, client: &WmClient) -> Result<(), Box<dyn Error>> {
