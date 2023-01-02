@@ -1,4 +1,3 @@
-pub mod configure;
 pub mod control;
 pub mod drag;
 pub mod draw;
@@ -15,17 +14,6 @@ use super::usecase::WmClientUseCase;
 impl<'a> ClientUseCaseImpl<'a> for WmClientUseCase<'a> {
     fn compose_client(&mut self, window: Window) -> Result<(), Box<dyn Error>> {
         self.usecase_compose_client(window)
-    }
-
-    fn configure_window(
-        &self,
-        window: Window,
-        x: i32,
-        y: i32,
-        width: i32,
-        height: i32,
-    ) -> Result<(), Box<dyn Error>> {
-        self.usecase_configure_window(window, x, y, width, height)
     }
 
     fn start_to_drag_client(

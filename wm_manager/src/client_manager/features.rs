@@ -17,7 +17,7 @@ use wm_model::{
     },
     traits::client_manager::ClientManagerImpl,
 };
-use x11rb::protocol::xproto::{ConfigureWindowAux, ConnectionExt, Window};
+use x11rb::protocol::xproto::Window;
 
 use self::move_resize::WmMoveResizeMask;
 
@@ -87,18 +87,6 @@ impl<'a> ClientManagerImpl<'a> for WmClientManager<'a> {
             window_type,
             WmMoveResizeMask::Resize,
         )
-    }
-
-    fn configure_window(&self, window: Window, geom: Geometry) -> Result<(), Box<dyn Error>> {
-        let aux = ConfigureWindowAux::new()
-            .x(geom.x as i32)
-            .y(geom.y as i32)
-            .width(geom.width as u32)
-            .height(geom.height as u32)
-            .sibling(None)
-            .stack_mode(None);
-        self.connection.configure_window(window, &aux)?;
-        Ok(())
     }
 
     fn query_id(&self, window: Window) -> Option<(ClientID, WindowType)> {

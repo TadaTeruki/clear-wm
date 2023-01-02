@@ -767,7 +767,6 @@ dependencies = [
 name = "wm_listener"
 version = "0.1.0"
 dependencies = [
- "cairo-rs",
  "log",
  "x11rb",
 ]

@@ -1,7 +1,9 @@
 use log::info;
 use wm_config::Config;
 use wm_controller::{event_handler::handler::WmEventHandler, session::start_session};
-use wm_listener::event_listener::listener::WmEventListener;
+use wm_listener::{
+    event_listener::listener::WmEventListener, event_reflector::reflector::WmEventReflector,
+};
 use wm_logger::WmLogger;
 use wm_manager::{
     client_manager::manager::WmClientManager, cursor_manager::manager::WmCursorManager,
@@ -47,7 +49,12 @@ fn main() {
     );
 
     let mut event_listener = WmEventListener::new(&connection).unwrap();
-    let mut client_handler = WmEventHandler::new(&mut client_usecase, &mut event_listener);
+    let mut event_reflector = WmEventReflector::new(&connection).unwrap();
+    let mut client_handler = WmEventHandler::new(
+        &mut client_usecase,
+        &mut event_listener,
+        &mut event_reflector,
+    );
 
     start_session(&mut client_handler);
 }

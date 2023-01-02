@@ -5,15 +5,6 @@ use x11rb::protocol::xproto::Window;
 pub trait ClientUseCaseImpl<'a> {
     fn compose_client(&mut self, window: Window) -> Result<(), Box<dyn Error>>;
 
-    fn configure_window(
-        &self,
-        window: Window,
-        x: i32,
-        y: i32,
-        width: i32,
-        height: i32,
-    ) -> Result<(), Box<dyn Error>>;
-
     fn start_to_drag_client(
         &mut self,
         window: Window,

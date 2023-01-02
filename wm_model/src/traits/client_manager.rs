@@ -41,8 +41,6 @@ pub trait ClientManagerImpl<'a> {
         window_type: WindowType,
     ) -> Result<(), Box<dyn Error>>;
 
-    fn configure_window(&self, window: Window, geom: Geometry) -> Result<(), Box<dyn Error>>;
-
     fn query_id(&self, window: Window) -> Option<(ClientID, WindowType)>;
 
     fn draw_frame(&self, client_id: ClientID) -> Result<(), Box<dyn Error>>;

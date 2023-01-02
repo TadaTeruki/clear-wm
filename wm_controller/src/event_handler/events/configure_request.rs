@@ -8,13 +8,7 @@ impl<'a> WmEventHandler<'a> {
         &self,
         event: &ConfigureRequestEvent,
     ) -> Result<(), Box<dyn Error>> {
-        self.client_usecase.configure_window(
-            event.window,
-            event.x.into(),
-            event.y.into(),
-            event.width.into(),
-            event.height.into(),
-        )?;
-        Ok(())
+        // do reflection
+        self.event_reflector.reflect_on_configure_request(event)
     }
 }
