@@ -1,12 +1,12 @@
-pub mod create;
-pub mod draw;
-pub mod focus;
-pub mod get_geometry;
-pub mod grab;
-pub mod map;
-pub mod move_resize;
-pub mod raise;
-pub mod remove;
+mod create;
+mod draw;
+mod focus;
+mod get_geometry;
+mod grab;
+mod map;
+mod move_resize;
+mod raise;
+mod remove;
 
 use std::error::Error;
 
@@ -15,7 +15,7 @@ use wm_model::{
         client::{ClientID, WindowType},
         geometry::Geometry,
     },
-    traits::manager::ClientManagerImpl,
+    traits::client_manager::ClientManagerImpl,
 };
 use x11rb::protocol::xproto::{ConfigureWindowAux, ConnectionExt, Window};
 

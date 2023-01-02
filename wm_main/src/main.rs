@@ -1,14 +1,14 @@
 use log::info;
 use wm_config::Config;
-use wm_controller::{handler::WmHandler, start_session};
-use wm_listener::event_listener::WmEventListener;
+use wm_controller::{event_handler::handler::WmEventHandler, session::start_session};
+use wm_listener::event_listener::listener::WmEventListener;
 use wm_logger::WmLogger;
 use wm_manager::{
     client_manager::manager::WmClientManager, cursor_manager::manager::WmCursorManager,
     server_manager::manager::WmServerManager,
 };
 use wm_model::entity::visual::WmVisual;
-use wm_usecase::client::usecase::WmClientUseCase;
+use wm_usecase::client_usecase::usecase::WmClientUseCase;
 use x11rb::{
     connection::Connection,
     protocol::xproto::{ChangeWindowAttributesAux, ConnectionExt as _, EventMask},
@@ -45,9 +45,9 @@ fn main() {
         &mut cursor_manager,
         &mut server_manager,
     );
-    let mut client_handler = WmHandler::new(&mut client_usecase);
 
-    let mut listener = WmEventListener::new(&connection).unwrap();
+    let mut event_listener = WmEventListener::new(&connection).unwrap();
+    let mut client_handler = WmEventHandler::new(&mut client_usecase, &mut event_listener);
 
-    start_session(&mut listener, &mut client_handler);
+    start_session(&mut client_handler);
 }

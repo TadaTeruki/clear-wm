@@ -1,5 +1,5 @@
 use std::error::Error;
 
-pub trait ClientDrawDeviceImpl {
+pub trait ClientDrawingDeviceImpl {
     fn draw(&self) -> Result<(), Box<dyn Error>>;
 }

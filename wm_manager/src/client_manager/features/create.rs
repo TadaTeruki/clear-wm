@@ -2,7 +2,7 @@ use std::error::Error;
 
 use cairo::XCBSurface;
 use wm_model::entity::{
-    client::{ClientID, WindowType, WmClient},
+    client::{ClientID, WindowType},
     geometry::Geometry,
 };
 use x11rb::{
@@ -14,6 +14,7 @@ use x11rb::{
 };
 
 use crate::client_manager::{
+    client::WmClient,
     geometry::{app_relative_position, ClientGeometry},
     manager::WmClientManager,
 };
@@ -119,10 +120,8 @@ impl<'a> WmClientManager<'a> {
         self.client_index
             .insert(frame, (client_id, WindowType::Frame));
 
-        self.client_container.insert(
-            client_id,
-            WmClient::new(client_id, window, frame, frame_surface),
-        );
+        self.client_container
+            .insert(client_id, WmClient::new(window, frame, frame_surface));
 
         self.last_client_id = client_id;
 

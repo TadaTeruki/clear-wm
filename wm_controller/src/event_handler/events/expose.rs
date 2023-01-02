@@ -1,9 +1,9 @@
 use std::error::Error;
 use x11rb::protocol::xproto::ExposeEvent;
 
-use super::WmHandler;
+use crate::event_handler::handler::WmEventHandler;
 
-impl<'a> WmHandler<'a> {
+impl<'a> WmEventHandler<'a> {
     pub fn handle_expose(&mut self, event: &ExposeEvent) -> Result<(), Box<dyn Error>> {
         self.client_usecase.draw_client(event.window)?;
         Ok(())

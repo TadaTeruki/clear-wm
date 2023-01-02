@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use wm_config::WmConfig;
 use wm_model::entity::{
-    client::{ClientID, WindowType, WmClient},
+    client::{ClientID, WindowType},
     visual::WmVisual,
 };
 use x11rb::{
@@ -10,15 +10,17 @@ use x11rb::{
     xcb_ffi::XCBConnection,
 };
 
-pub struct WmClientManager<'a> {
-    pub connection: &'a XCBConnection,
-    pub screen: &'a Screen,
-    pub visual: &'a WmVisual,
-    pub config: &'a WmConfig,
+use super::client::WmClient;
 
-    pub last_client_id: ClientID,
-    pub client_index: HashMap<Window, (ClientID, WindowType)>,
-    pub client_container: HashMap<ClientID, WmClient>,
+pub struct WmClientManager<'a> {
+    pub(super) connection: &'a XCBConnection,
+    pub(super) screen: &'a Screen,
+    pub(super) visual: &'a WmVisual,
+    pub(super) config: &'a WmConfig,
+
+    pub(super) last_client_id: ClientID,
+    pub(super) client_index: HashMap<Window, (ClientID, WindowType)>,
+    pub(super) client_container: HashMap<ClientID, WmClient>,
 }
 
 impl<'a> WmClientManager<'a> {

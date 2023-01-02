@@ -4,7 +4,6 @@ use x11rb::protocol::xproto::Window;
 
 use crate::entity::{
     client::{ClientID, WindowType},
-    cursor::WmCursorDragInfo,
     geometry::Geometry,
 };
 
@@ -59,24 +58,4 @@ pub trait ClientManagerImpl<'a> {
     fn grab(&self, client_id: ClientID) -> Result<(), Box<dyn Error>>;
 
     fn ungrab(&self, client_id: ClientID) -> Result<(), Box<dyn Error>>;
-}
-
-pub trait CursorManagerImpl {
-    fn start_to_drag_client(
-        &mut self,
-        client_id_: ClientID,
-        relative_x_: i32,
-        relative_y_: i32,
-        first_frame_geom: Geometry,
-    );
-
-    fn get_drag_info(&self) -> Option<WmCursorDragInfo>;
-
-    fn release_dragging_client(&mut self);
-}
-
-pub trait ServerManagerImpl {
-    fn grab(&mut self) -> Result<(), Box<dyn Error>>;
-    fn ungrab(&mut self) -> Result<(), Box<dyn Error>>;
-    fn sync(&mut self) -> Result<(), Box<dyn Error>>;
 }

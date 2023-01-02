@@ -1,15 +1,13 @@
-pub mod client;
-
 use wm_config::WmConfig;
 
-pub struct WmDrawDevice<'a> {
-    surface: &'a cairo::XCBSurface,
-    width: i32,
-    height: i32,
-    config: &'a WmConfig,
+pub struct WmDrawingDevice<'a> {
+    pub(super) surface: &'a cairo::XCBSurface,
+    pub(super) width: i32,
+    pub(super) height: i32,
+    pub(super) config: &'a WmConfig,
 }
 
-impl<'a> WmDrawDevice<'a> {
+impl<'a> WmDrawingDevice<'a> {
     pub fn new(
         surface_: &'a cairo::XCBSurface,
         width_: i32,

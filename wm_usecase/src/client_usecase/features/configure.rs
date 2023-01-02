@@ -3,10 +3,10 @@ use std::error::Error;
 use wm_model::entity::geometry::Geometry;
 use x11rb::protocol::xproto::Window;
 
-use crate::client::usecase::WmClientUseCase;
+use crate::client_usecase::usecase::WmClientUseCase;
 
 impl<'a> WmClientUseCase<'a> {
-    pub fn configure_window(
+    pub fn usecase_configure_window(
         &self,
         window: Window,
         x_: i32,

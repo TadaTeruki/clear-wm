@@ -1,9 +1,9 @@
 use std::error::Error;
 use x11rb::protocol::xproto::UnmapNotifyEvent;
 
-use super::WmHandler;
+use crate::event_handler::handler::WmEventHandler;
 
-impl<'a> WmHandler<'a> {
+impl<'a> WmEventHandler<'a> {
     pub fn handle_unmap_notify(&mut self, event: &UnmapNotifyEvent) -> Result<(), Box<dyn Error>> {
         self.client_usecase.remove_client(event.window)
     }

@@ -2,12 +2,12 @@ use std::error::Error;
 
 use log::warn;
 use wm_model::entity::{
-    client::{ClientID, WindowType, WmClient},
+    client::{ClientID, WindowType},
     geometry::Geometry,
 };
 use x11rb::protocol::xproto::{ConfigureWindowAux, ConnectionExt};
 
-use crate::client_manager::{geometry::ClientGeometry, manager::WmClientManager};
+use crate::client_manager::{client::WmClient, geometry::ClientGeometry, manager::WmClientManager};
 
 pub enum WmMoveResizeMask {
     Move,

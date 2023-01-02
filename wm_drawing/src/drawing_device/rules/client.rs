@@ -1,10 +1,8 @@
 use std::error::Error;
 
-use crate::traits::ClientDrawDeviceImpl;
+use crate::{drawing_device::device::WmDrawingDevice, traits::ClientDrawingDeviceImpl};
 
-use super::WmDrawDevice;
-
-impl<'a> ClientDrawDeviceImpl for WmDrawDevice<'a> {
+impl<'a> ClientDrawingDeviceImpl for WmDrawingDevice<'a> {
     fn draw(&self) -> Result<(), Box<dyn Error>> {
         let cr = cairo::Context::new(self.surface)?;
 

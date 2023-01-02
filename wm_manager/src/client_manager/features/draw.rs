@@ -1,10 +1,10 @@
 use std::error::Error;
 
 use log::warn;
-use wm_drawing::{device::WmDrawDevice, traits::ClientDrawDeviceImpl};
+use wm_drawing::{drawing_device::device::WmDrawingDevice, traits::ClientDrawingDeviceImpl};
 use wm_model::{
     entity::client::{ClientID, WindowType},
-    traits::manager::ClientManagerImpl,
+    traits::client_manager::ClientManagerImpl,
 };
 
 use crate::client_manager::manager::WmClientManager;
@@ -16,8 +16,8 @@ impl<'a> WmClientManager<'a> {
             self.get_geometry(client_id, WindowType::Frame)?,
         ) {
             let draw_device =
-                WmDrawDevice::new(&client.frame_surface, geom.width, geom.height, self.config);
-            <WmDrawDevice as ClientDrawDeviceImpl>::draw(&draw_device)?;
+                WmDrawingDevice::new(&client.frame_surface, geom.width, geom.height, self.config);
+            <WmDrawingDevice as ClientDrawingDeviceImpl>::draw(&draw_device)?;
         } else {
             warn!("surface not found");
         }

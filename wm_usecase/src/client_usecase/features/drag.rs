@@ -4,10 +4,10 @@ use log::warn;
 use wm_model::entity::{client::WindowType, cursor::DragMode, geometry::Geometry};
 use x11rb::protocol::xproto::Window;
 
-use crate::client::usecase::WmClientUseCase;
+use crate::client_usecase::usecase::WmClientUseCase;
 
 impl<'a> WmClientUseCase<'a> {
-    pub fn start_to_drag_client(
+    pub fn usecase_start_to_drag_client(
         &mut self,
         window: Window,
         relative_x: i32,
@@ -26,12 +26,16 @@ impl<'a> WmClientUseCase<'a> {
         Ok(())
     }
 
-    pub fn release_dragging_client(&mut self) -> Result<(), Box<dyn Error>> {
+    pub fn usecase_release_dragging_client(&mut self) -> Result<(), Box<dyn Error>> {
         self.cursor_manager.release_dragging_client();
         Ok(())
     }
 
-    pub fn drag_client(&mut self, cursor_x: i32, cursor_y: i32) -> Result<(), Box<dyn Error>> {
+    pub fn usecase_drag_client(
+        &mut self,
+        cursor_x: i32,
+        cursor_y: i32,
+    ) -> Result<(), Box<dyn Error>> {
         let drag_info = {
             if let Some(drag_info_) = self.cursor_manager.get_drag_info() {
                 drag_info_
