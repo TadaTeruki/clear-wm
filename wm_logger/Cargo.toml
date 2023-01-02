@@ -8,5 +8,5 @@ edition.workspace = true
 
 [dependencies]
 wm_config = { path = "../wm_config" }
-log = "0.4.17"
-chrono = "0.4.23"
+log = "0.4"
+chrono = "0.4"
