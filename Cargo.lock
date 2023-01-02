@@ -737,6 +737,81 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "712e227841d057c1ee1cd2fb22fa7e5a5461ae8e48fa2ca79ec42cfc1931183f"
 
 [[package]]
+name = "wm_config"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "wm_controller"
+version = "0.1.0"
+dependencies = [
+ "log",
+ "wm_listener",
+ "wm_usecase",
+ "x11rb",
+]
+
+[[package]]
+name = "wm_drawing"
+version = "0.1.0"
+dependencies = [
+ "cairo-rs",
+ "log",
+ "wm_config",
+]
+
+[[package]]
+name = "wm_listener"
+version = "0.1.0"
+dependencies = [
+ "cairo-rs",
+ "log",
+ "x11rb",
+]
+
+[[package]]
+name = "wm_logger"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "log",
+ "wm_config",
+]
+
+[[package]]
+name = "wm_manager"
+version = "0.1.0"
+dependencies = [
+ "cairo-rs",
+ "log",
+ "wm_config",
+ "wm_drawing",
+ "wm_model",
+ "x11rb",
+]
+
+[[package]]
+name = "wm_model"
+version = "0.1.0"
+dependencies = [
+ "cairo-rs",
+ "log",
+ "x11rb",
+]
+
+[[package]]
+name = "wm_usecase"
+version = "0.1.0"
+dependencies = [
+ "log",
+ "wm_model",
+ "x11rb",
+]
+
+[[package]]
 name = "x11rb"
 version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -765,87 +840,12 @@ version = "0.1.0"
 dependencies = [
  "cairo-rs",
  "log",
+ "wm_config",
+ "wm_controller",
+ "wm_listener",
+ "wm_logger",
+ "wm_manager",
+ "wm_model",
+ "wm_usecase",
  "x11rb",
- "zym-config",
- "zym-controller",
- "zym-listener",
- "zym-logger",
- "zym-manager",
- "zym-model",
- "zym-usecase",
-]
-
-[[package]]
-name = "zym-config"
-version = "0.1.0"
-dependencies = [
- "serde",
- "serde_json",
-]
-
-[[package]]
-name = "zym-controller"
-version = "0.1.0"
-dependencies = [
- "log",
- "x11rb",
- "zym-listener",
- "zym-usecase",
-]
-
-[[package]]
-name = "zym-draw"
-version = "0.1.0"
-dependencies = [
- "cairo-rs",
- "log",
- "zym-config",
-]
-
-[[package]]
-name = "zym-listener"
-version = "0.1.0"
-dependencies = [
- "cairo-rs",
- "log",
- "x11rb",
-]
-
-[[package]]
-name = "zym-logger"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "log",
- "zym-config",
-]
-
-[[package]]
-name = "zym-manager"
-version = "0.1.0"
-dependencies = [
- "cairo-rs",
- "log",
- "x11rb",
- "zym-config",
- "zym-draw",
- "zym-model",
-]
-
-[[package]]
-name = "zym-model"
-version = "0.1.0"
-dependencies = [
- "cairo-rs",
- "log",
- "x11rb",
-]
-
-[[package]]
-name = "zym-usecase"
-version = "0.1.0"
-dependencies = [
- "log",
- "x11rb",
- "zym-model",
 ]

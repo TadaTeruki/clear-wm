@@ -1,0 +1,12 @@
+[package]
+name = "wm_usecase"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+x11rb = { version = "0.11", features = ["allow-unsafe-code", "render"] }
+wm_model = { path = "../wm_model" }
+log = "0.4"

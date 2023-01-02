@@ -1,0 +1,12 @@
+[package]
+name = "wm_logger"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+
+# See more keys and their definitions at https://doc.rust_lang.org/cargo/reference/manifest.html
+
+[dependencies]
+wm_config = { path = "../wm_config" }
+log = "0.4.17"
+chrono = "0.4.23"

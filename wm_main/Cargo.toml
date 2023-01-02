@@ -1,0 +1,19 @@
+[package]
+name = "zym"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+x11rb = { version = "0.11", features = ["allow-unsafe-code", "render"] }
+cairo-rs = { version = "0.16", features = ["xcb"] }
+wm_listener = { path = "../wm_listener" }
+wm_logger = { path = "../wm_logger" }
+wm_model = { path = "../wm_model" }
+wm_controller = { path = "../wm_controller" }
+wm_manager = { path = "../wm_manager" }
+wm_config = { path = "../wm_config" }
+wm_usecase = { path = "../wm_usecase" }
+log = "0.4"

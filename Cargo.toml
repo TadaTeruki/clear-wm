@@ -1,5 +1,15 @@
 [workspace]
-members = [ "zym", "zym-config", "zym-logger", "zym-model", "zym-listener", "zym-controller", "zym-manager", "zym-usecase", "zym-draw" ]
+members = [
+    "wm_main",
+    "wm_config",
+    "wm_logger",
+    "wm_model",
+    "wm_listener",
+    "wm_controller",
+    "wm_manager",
+    "wm_usecase",
+    "wm_drawing"
+]
 
 [workspace.package]
 version = "0.1.0"
