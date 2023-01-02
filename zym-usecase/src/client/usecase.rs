@@ -1,6 +1,5 @@
 use std::error::Error;
 
-use log::warn;
 use x11rb::protocol::xproto::Window;
 use zym_model::common::manager::{ClientManagerImpl, CursorManagerImpl, ServerManagerImpl};
 
