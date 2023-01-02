@@ -17,10 +17,8 @@ impl<'a> WmClientManager<'a> {
             }
         };
 
-        self.connection.grab_server()?;
         self.connection.unmap_window(client.frame)?;
         self.connection.destroy_window(client.frame)?;
-        self.connection.ungrab_server()?;
 
         self.client_index.remove(&client.app);
         self.client_index.remove(&client.frame);

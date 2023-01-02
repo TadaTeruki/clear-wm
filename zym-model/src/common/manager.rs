@@ -44,7 +44,9 @@ pub trait ClientManagerImpl<'a> {
 
     fn configure_window(&self, window: Window, geom: Geometry) -> Result<(), Box<dyn Error>>;
 
-    fn query(&self, window: Window) -> Option<(ClientID, WindowType)>;
+    fn query_id(&self, window: Window) -> Option<(ClientID, WindowType)>;
+
+    fn draw_frame(&self, client_id: ClientID) -> Result<(), Box<dyn Error>>;
 
     fn remove(&mut self, client_id: ClientID) -> Result<(), Box<dyn Error>>;
 
@@ -71,4 +73,10 @@ pub trait CursorManagerImpl {
     fn get_drag_info(&self) -> Option<WmCursorDragInfo>;
 
     fn release_dragging_client(&mut self);
+}
+
+pub trait ServerManagerImpl {
+    fn grab(&mut self) -> Result<(), Box<dyn Error>>;
+    fn ungrab(&mut self) -> Result<(), Box<dyn Error>>;
+    fn sync(&mut self) -> Result<(), Box<dyn Error>>;
 }

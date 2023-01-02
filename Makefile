@@ -6,7 +6,7 @@ XINITRC = $(HOME)/.xinitrc
 debug:
 	$(SHELL) script/check-zymconf.sh \
 		$(CONFIG_FILE) $(DEFAULT_CONFIG_FILE) \
-		$(XINITRC) "$(CURDIR)/target/debug/zym $(CONFIG_FILE) & xterm"
+		$(XINITRC) "xcompmgr & $(CURDIR)/target/debug/zym $(CONFIG_FILE) & xterm"
 	$(CARGO) build
 	startx
 

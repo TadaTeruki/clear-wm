@@ -46,8 +46,6 @@ impl<'a> WmClientManager<'a> {
         let frame_geom = client_geom.to_frame(self.config).for_system_api()?;
         let app_geom = client_geom.to_app_relative(self.config).for_system_api()?;
 
-        self.connection.grab_server()?;
-
         match mask {
             WmMoveResizeMask::MoveResize => {
                 self.connection.configure_window(
@@ -64,6 +62,10 @@ impl<'a> WmClientManager<'a> {
                         .width(app_geom.width as u32)
                         .height(app_geom.height as u32),
                 )?;
+
+                client
+                    .frame_surface
+                    .set_size(frame_geom.width as i32, frame_geom.height as i32)?;
             }
             WmMoveResizeMask::Move => {
                 self.connection.configure_window(
@@ -86,10 +88,13 @@ impl<'a> WmClientManager<'a> {
                         .width(app_geom.width as u32)
                         .height(app_geom.height as u32),
                 )?;
+
+                client
+                    .frame_surface
+                    .set_size(frame_geom.width as i32, frame_geom.height as i32)?;
             }
         }
 
-        self.connection.ungrab_server()?;
         Ok(())
     }
 }

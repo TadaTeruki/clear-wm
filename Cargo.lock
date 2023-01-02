@@ -794,6 +794,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "zym-draw"
+version = "0.1.0"
+dependencies = [
+ "cairo-rs",
+ "log",
+ "zym-config",
+]
+
+[[package]]
 name = "zym-listener"
 version = "0.1.0"
 dependencies = [
@@ -819,6 +828,7 @@ dependencies = [
  "log",
  "x11rb",
  "zym-config",
+ "zym-draw",
  "zym-model",
 ]
 

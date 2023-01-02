@@ -21,6 +21,8 @@ pub trait ClientUseCaseImpl<'a> {
         relative_y: i32,
     ) -> Result<(), Box<dyn Error>>;
 
+    fn draw_client(&mut self, window: Window) -> Result<(), Box<dyn Error>>;
+
     fn drag_client(&mut self, cursor_x: i32, cursor_y: i32) -> Result<(), Box<dyn Error>>;
 
     fn release_dragging_client(&mut self) -> Result<(), Box<dyn Error>>;

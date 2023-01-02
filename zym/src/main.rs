@@ -5,10 +5,13 @@ use x11rb::{
     xcb_ffi::XCBConnection,
 };
 use zym_config::Config;
-use zym_controller::{handler::WmHandler, start_listener};
+use zym_controller::{handler::WmHandler, start_session};
 use zym_listener::event_listener::WmEventListener;
 use zym_logger::WmLogger;
-use zym_manager::{client::manager::WmClientManager, cursor::manager::WmCursorManager};
+use zym_manager::{
+    client::manager::WmClientManager, cursor::manager::WmCursorManager,
+    server::manager::WmServerManager,
+};
 use zym_model::entity::visual::WmVisual;
 use zym_usecase::client::usecase::WmClientUseCase;
 
@@ -31,14 +34,20 @@ fn main() {
         .change_window_attributes(screen.root, &aux)
         .unwrap();
 
-    let visual = WmVisual::new(&connection, screen).unwrap();
+    let visual = WmVisual::new(screen).unwrap();
 
     let mut client_manager = WmClientManager::new(&connection, screen, &visual, config.wm_config());
     let mut cursor_manager = WmCursorManager::new(config.wm_config());
-    let mut client_usecase = WmClientUseCase::new(&mut client_manager, &mut cursor_manager);
+    let mut server_manager = WmServerManager::new(&connection);
+
+    let mut client_usecase = WmClientUseCase::new(
+        &mut client_manager,
+        &mut cursor_manager,
+        &mut server_manager,
+    );
     let mut client_handler = WmHandler::new(&mut client_usecase);
 
     let mut listener = WmEventListener::new(&connection).unwrap();
 
-    start_listener(&mut listener, &mut client_handler);
+    start_session(&mut listener, &mut client_handler);
 }

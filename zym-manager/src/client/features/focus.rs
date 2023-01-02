@@ -19,10 +19,8 @@ impl<'a> WmClientManager<'a> {
                 return Ok(());
             }
         };
-        self.connection.grab_server()?;
         self.connection
             .set_input_focus(InputFocus::POINTER_ROOT, client.app, CURRENT_TIME)?;
-        self.connection.ungrab_server()?;
         Ok(())
     }
 

@@ -11,4 +11,5 @@ x11rb = { version = "0.11", features = ["allow-unsafe-code", "render"] }
 cairo-rs = { version = "0.16", features = ["xcb"] }
 zym-model = { path = "../zym-model" }
 zym-config = { path = "../zym-config" }
+zym-draw = { path = "../zym-draw" }
 log = "0.4"

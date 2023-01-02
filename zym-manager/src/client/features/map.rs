@@ -17,12 +17,10 @@ impl<'a> WmClientManager<'a> {
             }
         };
 
-        self.connection.grab_server()?;
         self.connection
             .change_save_set(SetMode::INSERT, client.app)?;
         self.connection.map_window(client.frame)?;
         self.connection.map_window(client.app)?;
-        self.connection.ungrab_server()?;
         Ok(())
     }
 }

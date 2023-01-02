@@ -3,11 +3,11 @@ pub mod handler;
 use std::error::Error;
 
 use handler::WmHandler;
-use log::{error, info};
+use log::{error, info, warn};
 use x11rb::protocol::Event;
 use zym_listener::common::EventListenerImpl;
 
-pub fn start_listener<'a, EL: EventListenerImpl<'a>>(
+pub fn start_session<'a, EL: EventListenerImpl<'a>>(
     listener: &mut EL,
     handler: &mut WmHandler<'a>,
 ) {
@@ -22,6 +22,7 @@ pub fn event_loop<'a, EL: EventListenerImpl<'a>>(
     listener: &mut EL,
     handler: &mut WmHandler<'a>,
 ) -> Result<(), Box<dyn Error>> {
+    warn!("waiting...");
     let event = listener.wait()?;
     let mut event_option = Some(event);
 
@@ -29,19 +30,20 @@ pub fn event_loop<'a, EL: EventListenerImpl<'a>>(
         info!("X event - {:?}", event);
 
         match event {
-            Event::ButtonPress(event) => handler.handle_button_press(&event)?,
-            Event::ButtonRelease(event) => handler.handle_button_release(&event)?,
-            Event::ClientMessage(event) => handler.handle_client_message(&event)?,
-            Event::ConfigureRequest(event) => handler.handle_configure_request(&event)?,
-            Event::EnterNotify(event) => handler.handle_enter_notify(&event)?,
-            Event::Expose(event) => handler.handle_expose(&event)?,
-            Event::MapRequest(event) => handler.handle_map_request(&event)?,
-            Event::MotionNotify(event) => handler.handle_motion_notify(&event)?,
-            Event::UnmapNotify(event) => handler.handle_unmap_notify(&event)?,
+            Event::ButtonPress(ev) => handler.handle_button_press(&ev)?,
+            Event::ButtonRelease(ev) => handler.handle_button_release(&ev)?,
+            Event::ClientMessage(ev) => handler.handle_client_message(&ev)?,
+            Event::ConfigureRequest(ev) => handler.handle_configure_request(&ev)?,
+            Event::EnterNotify(ev) => handler.handle_enter_notify(&ev)?,
+            Event::Expose(ev) => handler.handle_expose(&ev)?,
+            Event::MapRequest(ev) => handler.handle_map_request(&ev)?,
+            Event::MotionNotify(ev) => handler.handle_motion_notify(&ev)?,
+            Event::UnmapNotify(ev) => handler.handle_unmap_notify(&ev)?,
             Event::Error(err) => error!("{:?}", err),
             _ => {}
         }
         event_option = listener.poll()?;
     }
+
     Ok(())
 }

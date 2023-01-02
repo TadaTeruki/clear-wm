@@ -1,4 +1,5 @@
 pub mod create;
+pub mod draw;
 pub mod focus;
 pub mod get_geometry;
 pub mod grab;
@@ -100,8 +101,12 @@ impl<'a> ClientManagerImpl<'a> for WmClientManager<'a> {
         Ok(())
     }
 
-    fn query(&self, window: Window) -> Option<(ClientID, WindowType)> {
+    fn query_id(&self, window: Window) -> Option<(ClientID, WindowType)> {
         self.client_index.get(&window).copied()
+    }
+
+    fn draw_frame(&self, client_id: ClientID) -> Result<(), Box<dyn Error>> {
+        self.draw_client_frame(client_id)
     }
 
     fn remove(&mut self, client_id: ClientID) -> Result<(), Box<dyn Error>> {
