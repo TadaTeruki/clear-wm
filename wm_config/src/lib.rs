@@ -41,14 +41,14 @@ impl Config {
     pub fn load() -> Result<Self, Box<dyn Error>> {
         let args: Vec<_> = env::args().collect();
         if args.len() <= 1 {
-            panic!("could not open the zym configuration file.");
+            panic!("could not open the clear-wm configuration file.");
         }
 
         let config_file = &args[1].clone();
 
         let parsed_build_config: BuildConfig;
         {
-            let file = config_file.to_string() + "/zym-build.json";
+            let file = config_file.to_string() + "/build_config.json";
             println!("{}", file);
             let raw = fs::read_to_string(file)?;
             parsed_build_config = serde_json::from_str(&raw)?;
@@ -56,7 +56,7 @@ impl Config {
 
         let parsed_wm_config: WmConfig;
         {
-            let file = config_file.to_string() + "/zym-wm.json";
+            let file = config_file.to_string() + "/wm_config.json";
             println!("{}", file);
             let raw = fs::read_to_string(file)?;
             parsed_wm_config = serde_json::from_str(&raw)?;

@@ -1,5 +1,5 @@
 [package]
-name = "zym"
+name = "clear_wm"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true

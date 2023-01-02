@@ -1,31 +1,32 @@
 #!/bin/bash
-zym_config_file=$1
-zym_default_config_file=$2
+wm_config_file=$1
+wm_default_config_file=$2
 xinitrc=$3
 xinit_command=$4
+project_name=$5
 
-zym_config_file_exists=0
+wm_config_file_exists=0
 xinitrc_exists=0
 
-if [ -d $zym_config_file ]; then 
-    zym_config_file_exists=1
+if [ -d $wm_config_file ]; then 
+    wm_config_file_exists=1
 fi
 
 if [ -f $xinitrc ]; then
     xinitrc_exists=1
 fi
 
-if [ $zym_config_file_exists -eq 1 -a $xinitrc_exists -eq 1 ]; then
+if [ $wm_config_file_exists -eq 1 -a $xinitrc_exists -eq 1 ]; then
     echo "$xinit_command" > $xinitrc
     return 0
 fi
 
 echo ""
-echo "[Zym Setup Notification]"
+echo "[$project_name setup notification]"
 echo "WARNING:"
 
-if [ $zym_config_file_exists -eq 0 ]; then
-    echo " - Zym configuration file '$zym_config_file' was not found."
+if [ $wm_config_file_exists -eq 0 ]; then
+    echo " - $project_name configuration file '$wm_config_file' was not found."
 fi
 
 if [ $xinitrc_exists -eq 0 ]; then
@@ -33,10 +34,10 @@ if [ $xinitrc_exists -eq 0 ]; then
 fi
 
 echo ""
-echo "Before starting the session, Zym needs to:"
+echo "before starting the session, $project_name needs to:"
 
-if [ $zym_config_file_exists -eq 0 ]; then
-    echo " - create a new configuration file '$zym_config_file'."
+if [ $wm_config_file_exists -eq 0 ]; then
+    echo " - create a new configuration file '$wm_config_file'."
 fi
 
 if [ $xinitrc_exists -eq 0 ]; then
@@ -56,9 +57,9 @@ if [ "$yn" = "Y" -o "$yn" = "y" ]; then
     echo "$xinit_command" > $xinitrc
     echo "set $xinitrc."
 
-    if [ $zym_config_file_exists -eq 0 ]; then
-        cp -r $zym_default_config_file $zym_config_file
-        echo "created $zym_config_file."
+    if [ $wm_config_file_exists -eq 0 ]; then
+        cp -r $wm_default_config_file $wm_config_file
+        echo "created $wm_config_file."
     fi
     return 0
 

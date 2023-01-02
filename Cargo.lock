@@ -97,6 +97,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "clear_wm"
+version = "0.1.0"
+dependencies = [
+ "log",
+ "wm_config",
+ "wm_controller",
+ "wm_listener",
+ "wm_logger",
+ "wm_manager",
+ "wm_model",
+ "wm_usecase",
+ "x11rb",
+]
+
+[[package]]
 name = "codespan-reporting"
 version = "0.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -830,19 +845,4 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d11c3c1f17cc0f3752a60366ea0892716168ab993c064feda43746ffe3128492"
 dependencies = [
  "nix",
-]
-
-[[package]]
-name = "zym"
-version = "0.1.0"
-dependencies = [
- "log",
- "wm_config",
- "wm_controller",
- "wm_listener",
- "wm_logger",
- "wm_manager",
- "wm_model",
- "wm_usecase",
- "x11rb",
 ]
