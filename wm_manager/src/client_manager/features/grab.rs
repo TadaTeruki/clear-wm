@@ -1,7 +1,6 @@
 use std::error::Error;
 
-use log::warn;
-use wm_model::entity::client::ClientID;
+use wm_model::entity::client::WmClient;
 use x11rb::protocol::xproto::{
     ButtonIndex, ConnectionExt, EventMask, GrabMode, ModMask, WindowEnum,
 };
@@ -9,15 +8,7 @@ use x11rb::protocol::xproto::{
 use crate::client_manager::types::manager::WmClientManager;
 
 impl<'a> WmClientManager<'a> {
-    pub fn grab_client(&self, client_id: ClientID) -> Result<(), Box<dyn Error>> {
-        let client = {
-            if let Some(client_) = self.client_container.get(&client_id) {
-                client_
-            } else {
-                warn!("client not found");
-                return Ok(());
-            }
-        };
+    pub fn grab_client(&self, client: &WmClient) -> Result<(), Box<dyn Error>> {
         self.connection.grab_button(
             true,
             client.app,
@@ -32,15 +23,7 @@ impl<'a> WmClientManager<'a> {
         Ok(())
     }
 
-    pub fn ungrab_client(&self, client_id: ClientID) -> Result<(), Box<dyn Error>> {
-        let client = {
-            if let Some(client_) = self.client_container.get(&client_id) {
-                client_
-            } else {
-                warn!("client not found");
-                return Ok(());
-            }
-        };
+    pub fn ungrab_client(&self, client: &WmClient) -> Result<(), Box<dyn Error>> {
         self.connection
             .ungrab_button(ButtonIndex::ANY, client.app, ModMask::ANY)?;
         Ok(())

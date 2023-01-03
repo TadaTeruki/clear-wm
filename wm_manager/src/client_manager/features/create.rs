@@ -1,10 +1,7 @@
 use std::error::Error;
 
 use cairo::XCBSurface;
-use wm_model::entity::{
-    client::{ClientID, WindowType},
-    geometry::Geometry,
-};
+use wm_model::entity::{client::WmClient, geometry::Geometry};
 use x11rb::{
     connection::Connection,
     protocol::xproto::{
@@ -14,7 +11,6 @@ use x11rb::{
 };
 
 use crate::client_manager::types::{
-    client::WmClient,
     geometry::{app_relative_position, ClientGeometry},
     manager::WmClientManager,
 };
@@ -82,7 +78,7 @@ impl<'a> WmClientManager<'a> {
         Ok((win, sfc))
     }
 
-    pub fn create_client(&mut self, window: Window) -> Result<ClientID, Box<dyn Error>> {
+    pub fn create_client(&mut self, window: Window) -> Result<WmClient, Box<dyn Error>> {
         let app_geom = {
             let g = self.connection.get_geometry(window)?.reply()?;
             ClientGeometry::from_app_absolute(
@@ -109,22 +105,6 @@ impl<'a> WmClientManager<'a> {
             &ChangeWindowAttributesAux::new().event_mask(EventMask::BUTTON_PRESS),
         )?;
 
-        let mut client_id = self.last_client_id;
-
-        while self.client_container.contains_key(&client_id) {
-            client_id += 1;
-        }
-
-        self.client_index
-            .insert(window, (client_id, WindowType::ComposedApp));
-        self.client_index
-            .insert(frame, (client_id, WindowType::Frame));
-
-        self.client_container
-            .insert(client_id, WmClient::new(window, frame, frame_surface));
-
-        self.last_client_id = client_id;
-
-        Ok(client_id)
+        Ok(WmClient::new(window, frame, frame_surface))
     }
 }

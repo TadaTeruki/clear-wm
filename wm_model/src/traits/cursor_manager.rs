@@ -1,9 +1,11 @@
-use crate::entity::{client::ClientID, cursor::WmCursorDragInfo, geometry::Geometry};
+use x11rb::protocol::xproto::Window;
+
+use crate::entity::{cursor::WmCursorDragInfo, geometry::Geometry};
 
 pub trait CursorManagerImpl {
     fn start_to_drag_client(
         &mut self,
-        client_id_: ClientID,
+        app_: Window,
         relative_x_: i32,
         relative_y_: i32,
         first_frame_geom: Geometry,

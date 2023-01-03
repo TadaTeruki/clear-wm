@@ -1,26 +1,21 @@
 use std::error::Error;
 
-use log::warn;
 use wm_drawing::{drawing_device::types::WmDrawingDevice, traits::ClientDrawingDeviceImpl};
-use wm_model::{
-    entity::client::{ClientID, WindowType},
-    traits::client_manager::ClientManagerImpl,
-};
+use wm_model::entity::client::WmClient;
+use x11rb::protocol::xproto::ConnectionExt;
 
 use crate::client_manager::types::manager::WmClientManager;
 
 impl<'a> WmClientManager<'a> {
-    pub fn draw_client_frame(&self, client_id: ClientID) -> Result<(), Box<dyn Error>> {
-        if let (Some(client), Some(geom)) = (
-            self.client_container.get(&client_id),
-            self.get_geometry(client_id, WindowType::Frame)?,
-        ) {
-            let draw_device =
-                WmDrawingDevice::new(&client.frame_surface, geom.width, geom.height, self.config);
-            <WmDrawingDevice as ClientDrawingDeviceImpl>::draw(&draw_device)?;
-        } else {
-            warn!("surface not found");
-        }
+    pub fn draw_client_frame(&self, client: &WmClient) -> Result<(), Box<dyn Error>> {
+        let geom = self.connection.get_geometry(client.frame)?.reply()?;
+        let draw_device = WmDrawingDevice::new(
+            &client.frame_surface,
+            geom.width as i32,
+            geom.height as i32,
+            self.config,
+        );
+        <WmDrawingDevice as ClientDrawingDeviceImpl>::draw(&draw_device)?;
         Ok(())
     }
 }

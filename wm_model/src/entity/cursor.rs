@@ -1,4 +1,6 @@
-use super::{client::ClientID, geometry::Geometry};
+use x11rb::protocol::xproto::Window;
+
+use super::geometry::Geometry;
 
 #[derive(Debug, Clone, Copy)]
 pub enum DragMode {
@@ -15,7 +17,7 @@ pub enum DragMode {
 
 #[derive(Debug, Clone, Copy)]
 pub struct WmCursorDragInfo {
-    pub client_id: ClientID,
+    pub app: Window,
     pub relative_x: i32,
     pub relative_y: i32,
     pub first_frame_geom: Geometry,

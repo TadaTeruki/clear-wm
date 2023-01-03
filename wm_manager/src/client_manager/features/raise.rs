@@ -1,22 +1,12 @@
 use std::error::Error;
 
-use log::warn;
-use wm_model::entity::client::ClientID;
+use wm_model::entity::client::WmClient;
 use x11rb::protocol::xproto::{ConfigureWindowAux, ConnectionExt, StackMode};
 
 use crate::client_manager::types::manager::WmClientManager;
 
 impl<'a> WmClientManager<'a> {
-    pub fn raise_client(&self, client_id: ClientID) -> Result<(), Box<dyn Error>> {
-        let client = {
-            if let Some(client_) = self.client_container.get(&client_id) {
-                client_
-            } else {
-                warn!("client not found");
-                return Ok(());
-            }
-        };
-
+    pub fn raise_client(&self, client: &WmClient) -> Result<(), Box<dyn Error>> {
         self.connection.configure_window(
             client.frame,
             &ConfigureWindowAux::new().stack_mode(StackMode::ABOVE),

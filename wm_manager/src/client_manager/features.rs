@@ -12,112 +12,67 @@ use std::error::Error;
 
 use wm_model::{
     entity::{
-        client::{ClientID, WindowType},
-        geometry::Geometry,
+        client::{WindowType, WmClient},
+        geometry::{Geometry, WmMoveResizeMask},
     },
     traits::client_manager::ClientManagerImpl,
 };
 use x11rb::protocol::xproto::Window;
 
-use self::move_resize::WmMoveResizeMask;
-
 use super::types::manager::WmClientManager;
 
 impl<'a> ClientManagerImpl<'a> for WmClientManager<'a> {
-    fn create(&mut self, window: Window) -> Result<ClientID, Box<dyn Error>> {
+    fn create(&mut self, window: Window) -> Result<WmClient, Box<dyn Error>> {
         self.create_client(window)
     }
 
-    fn map(&self, client_id: ClientID) -> Result<(), Box<dyn Error>> {
-        self.map_client(client_id)
+    fn map(&self, client: &WmClient) -> Result<(), Box<dyn Error>> {
+        self.map_client(client)
     }
 
     fn get_geometry(
         &self,
-        client_id: ClientID,
+        client: &WmClient,
         window_type: WindowType,
     ) -> Result<Option<Geometry>, Box<dyn Error>> {
-        self.get_client_geometry(client_id, window_type)
+        self.get_client_geometry(client, window_type)
     }
 
     fn move_resize(
         &self,
-        client_id: ClientID,
+        client: &WmClient,
         geom: Geometry,
         window_type: WindowType,
+        mask: WmMoveResizeMask,
     ) -> Result<(), Box<dyn Error>> {
-        self.move_resize_client(client_id, geom, window_type, WmMoveResizeMask::MoveResize)
+        self.move_resize_client(client, geom, window_type, mask)
     }
 
-    fn move_to(
-        &self,
-        client_id: ClientID,
-        x_: i32,
-        y_: i32,
-        window_type: WindowType,
-    ) -> Result<(), Box<dyn Error>> {
-        self.move_resize_client(
-            client_id,
-            Geometry {
-                x: x_,
-                y: y_,
-                width: 0,
-                height: 0,
-            },
-            window_type,
-            WmMoveResizeMask::Move,
-        )
+    fn draw_frame(&self, client: &WmClient) -> Result<(), Box<dyn Error>> {
+        self.draw_client_frame(client)
     }
 
-    fn resize(
-        &self,
-        client_id: ClientID,
-        width_: i32,
-        height_: i32,
-        window_type: WindowType,
-    ) -> Result<(), Box<dyn Error>> {
-        self.move_resize_client(
-            client_id,
-            Geometry {
-                x: 0,
-                y: 0,
-                width: width_,
-                height: height_,
-            },
-            window_type,
-            WmMoveResizeMask::Resize,
-        )
+    fn remove(&mut self, client: &WmClient) -> Result<(), Box<dyn Error>> {
+        self.remove_client(client)
     }
 
-    fn query_id(&self, window: Window) -> Option<(ClientID, WindowType)> {
-        self.client_index.get(&window).copied()
+    fn set_focus(&self, client: &WmClient) -> Result<(), Box<dyn Error>> {
+        self.set_client_focus(client)
     }
 
-    fn draw_frame(&self, client_id: ClientID) -> Result<(), Box<dyn Error>> {
-        self.draw_client_frame(client_id)
-    }
-
-    fn remove(&mut self, client_id: ClientID) -> Result<(), Box<dyn Error>> {
-        self.remove_client(client_id)
-    }
-
-    fn set_focus(&self, client_id: ClientID) -> Result<(), Box<dyn Error>> {
-        self.set_client_focus(client_id)
-    }
-
-    fn get_focus(&self) -> Result<Option<ClientID>, Box<dyn Error>> {
+    fn get_focus(&self) -> Result<Window, Box<dyn Error>> {
         self.get_client_focus()
     }
 
-    fn raise(&self, client_id: ClientID) -> Result<(), Box<dyn Error>> {
-        self.raise_client(client_id)
+    fn raise(&self, client: &WmClient) -> Result<(), Box<dyn Error>> {
+        self.raise_client(client)
     }
 
-    fn grab(&self, client_id: ClientID) -> Result<(), Box<dyn Error>> {
-        self.grab_client(client_id)
+    fn grab(&self, client: &WmClient) -> Result<(), Box<dyn Error>> {
+        self.grab_client(client)
     }
 
-    fn ungrab(&self, client_id: ClientID) -> Result<(), Box<dyn Error>> {
-        self.ungrab_client(client_id)
+    fn ungrab(&self, client: &WmClient) -> Result<(), Box<dyn Error>> {
+        self.ungrab_client(client)
     }
 }

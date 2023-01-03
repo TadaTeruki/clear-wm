@@ -1,7 +1,11 @@
 use std::error::Error;
 
 use log::warn;
-use wm_model::entity::{client::WindowType, cursor::DragMode, geometry::Geometry};
+use wm_model::entity::{
+    client::WindowType,
+    cursor::DragMode,
+    geometry::{Geometry, WmMoveResizeMask},
+};
 use x11rb::protocol::xproto::Window;
 
 use crate::client_usecase::types::WmClientUseCase;
@@ -13,16 +17,20 @@ impl<'a> WmClientUseCase<'a> {
         relative_x: i32,
         relative_y: i32,
     ) -> Result<(), Box<dyn Error>> {
-        if let Some((client_id, WindowType::Frame)) = self.client_manager.query_id(window) {
+        if let Some(client) = self.collection_manager.query_from_window(window)? {
+            if window != client.frame {
+                return Ok(());
+            }
             let frame_geom_option = self
                 .client_manager
-                .get_geometry(client_id, WindowType::Frame)?;
+                .get_geometry(client, WindowType::Frame)?;
 
             if let Some(frame_geom) = frame_geom_option {
                 self.cursor_manager
-                    .start_to_drag_client(client_id, relative_x, relative_y, frame_geom);
+                    .start_to_drag_client(client.app, relative_x, relative_y, frame_geom);
             }
         }
+
         Ok(())
     }
 
@@ -43,17 +51,24 @@ impl<'a> WmClientUseCase<'a> {
                 return Ok(());
             }
         };
-        let (client_id, relative_x, relative_y, first_frame_geom, drag_mode) = (
-            drag_info.client_id,
+        let (app, relative_x, relative_y, first_frame_geom, drag_mode) = (
+            drag_info.app,
             drag_info.relative_x,
             drag_info.relative_y,
             drag_info.first_frame_geom,
             drag_info.drag_mode,
         );
 
+        let client = match self.collection_manager.query_from_window(app)? {
+            Some(client_) => client_,
+            None => {
+                return Ok(());
+            }
+        };
+
         let frame_geom_option = self
             .client_manager
-            .get_geometry(client_id, WindowType::Frame)?;
+            .get_geometry(client, WindowType::Frame)?;
 
         let current_frame_geom = {
             if let Some(current_frame_geom_) = frame_geom_option {
@@ -82,13 +97,22 @@ impl<'a> WmClientUseCase<'a> {
 
         match drag_mode {
             DragMode::Move => {
-                self.client_manager
-                    .move_to(client_id, move_x, move_y, WindowType::Frame)?;
+                self.client_manager.move_resize(
+                    client,
+                    Geometry {
+                        x: move_x,
+                        y: move_y,
+                        width: 0,
+                        height: 0,
+                    },
+                    WindowType::Frame,
+                    WmMoveResizeMask::Move,
+                )?;
                 need_redraw = false;
             }
             DragMode::ResizeTop => {
                 self.client_manager.move_resize(
-                    client_id,
+                    client,
                     Geometry {
                         x: current_frame_geom.x,
                         y: move_y,
@@ -96,19 +120,25 @@ impl<'a> WmClientUseCase<'a> {
                         height: t_expand_height,
                     },
                     WindowType::Frame,
+                    WmMoveResizeMask::MoveResize,
                 )?;
             }
             DragMode::ResizeBottom => {
-                self.client_manager.resize(
-                    client_id,
-                    current_frame_geom.width,
-                    b_expand_height,
+                self.client_manager.move_resize(
+                    client,
+                    Geometry {
+                        x: 0,
+                        y: 0,
+                        width: l_expand_width,
+                        height: current_frame_geom.height,
+                    },
                     WindowType::Frame,
+                    WmMoveResizeMask::Resize,
                 )?;
             }
             DragMode::ResizeLeft => {
                 self.client_manager.move_resize(
-                    client_id,
+                    client,
                     Geometry {
                         x: move_x,
                         y: current_frame_geom.y,
@@ -116,19 +146,25 @@ impl<'a> WmClientUseCase<'a> {
                         height: current_frame_geom.height,
                     },
                     WindowType::Frame,
+                    WmMoveResizeMask::MoveResize,
                 )?;
             }
             DragMode::ResizeRight => {
-                self.client_manager.resize(
-                    client_id,
-                    r_expand_width,
-                    current_frame_geom.height,
+                self.client_manager.move_resize(
+                    client,
+                    Geometry {
+                        x: 0,
+                        y: 0,
+                        width: r_expand_width,
+                        height: current_frame_geom.height,
+                    },
                     WindowType::Frame,
+                    WmMoveResizeMask::Resize,
                 )?;
             }
             DragMode::ResizeTL => {
                 self.client_manager.move_resize(
-                    client_id,
+                    client,
                     Geometry {
                         x: move_x,
                         y: move_y,
@@ -136,11 +172,12 @@ impl<'a> WmClientUseCase<'a> {
                         height: t_expand_height,
                     },
                     WindowType::Frame,
+                    WmMoveResizeMask::MoveResize,
                 )?;
             }
             DragMode::ResizeTR => {
                 self.client_manager.move_resize(
-                    client_id,
+                    client,
                     Geometry {
                         x: current_frame_geom.x,
                         y: move_y,
@@ -148,11 +185,12 @@ impl<'a> WmClientUseCase<'a> {
                         height: t_expand_height,
                     },
                     WindowType::Frame,
+                    WmMoveResizeMask::MoveResize,
                 )?;
             }
             DragMode::ResizeBL => {
                 self.client_manager.move_resize(
-                    client_id,
+                    client,
                     Geometry {
                         x: move_x,
                         y: current_frame_geom.y,
@@ -160,21 +198,27 @@ impl<'a> WmClientUseCase<'a> {
                         height: b_expand_height,
                     },
                     WindowType::Frame,
+                    WmMoveResizeMask::MoveResize,
                 )?;
             }
             DragMode::ResizeBR => {
-                self.client_manager.resize(
-                    client_id,
-                    r_expand_width,
-                    b_expand_height,
+                self.client_manager.move_resize(
+                    client,
+                    Geometry {
+                        x: 0,
+                        y: 0,
+                        width: r_expand_width,
+                        height: b_expand_height,
+                    },
                     WindowType::Frame,
+                    WmMoveResizeMask::Resize,
                 )?;
             }
         }
 
         if need_redraw {
             self.server_manager.sync()?;
-            self.client_manager.draw_frame(client_id)?;
+            self.client_manager.draw_frame(client)?;
         }
 
         self.server_manager.ungrab()?;

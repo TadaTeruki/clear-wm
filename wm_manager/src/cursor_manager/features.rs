@@ -1,14 +1,15 @@
 use std::cmp::min;
 use wm_model::entity::cursor::{DragMode, WmCursorDragInfo};
 use wm_model::entity::geometry::Geometry;
-use wm_model::{entity::client::ClientID, traits::cursor_manager::CursorManagerImpl};
+use wm_model::traits::cursor_manager::CursorManagerImpl;
+use x11rb::protocol::xproto::Window;
 
 use super::types::WmCursorManager;
 
 impl<'a> CursorManagerImpl for WmCursorManager<'a> {
     fn start_to_drag_client(
         &mut self,
-        client_id_: ClientID,
+        app_: Window,
         relative_x_: i32,
         relative_y_: i32,
         frame_geom: Geometry,
@@ -45,7 +46,7 @@ impl<'a> CursorManagerImpl for WmCursorManager<'a> {
         }
 
         self.drag = Some(WmCursorDragInfo {
-            client_id: client_id_,
+            app: app_,
             relative_x: relative_x_,
             relative_y: relative_y_,
             first_frame_geom: frame_geom,

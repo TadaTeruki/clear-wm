@@ -1,5 +1,11 @@
 use std::error::Error;
 
+pub enum WmMoveResizeMask {
+    Move,
+    Resize,
+    MoveResize,
+}
+
 #[derive(Debug, Clone, Copy)]
 pub struct Geometry {
     pub x: i32,

@@ -6,7 +6,8 @@ use wm_listener::{
 };
 use wm_logger::WmLogger;
 use wm_manager::{
-    client_manager::types::manager::WmClientManager, cursor_manager::types::WmCursorManager,
+    client_manager::types::manager::WmClientManager,
+    collection_manager::types::WmCollectionManager, cursor_manager::types::WmCursorManager,
     server_manager::types::WmServerManager,
 };
 use wm_model::entity::visual::WmVisual;
@@ -41,11 +42,13 @@ fn main() {
     let mut client_manager = WmClientManager::new(&connection, screen, &visual, config.wm_config());
     let mut cursor_manager = WmCursorManager::new(config.wm_config());
     let mut server_manager = WmServerManager::new(&connection);
+    let mut collection_manager = WmCollectionManager::new();
 
     let mut client_usecase = WmClientUseCase::new(
         &mut client_manager,
         &mut cursor_manager,
         &mut server_manager,
+        &mut collection_manager,
     );
 
     let mut event_listener = WmEventListener::new(&connection).unwrap();
