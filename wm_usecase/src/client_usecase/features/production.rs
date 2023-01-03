@@ -1,5 +1,6 @@
 use std::error::Error;
 
+use log::{error, warn};
 use x11rb::protocol::xproto::Window;
 
 use crate::client_usecase::types::WmClientUseCase;
@@ -16,6 +17,8 @@ impl<'a> WmClientUseCase<'a> {
             self.client_manager.draw_frame(client)?;
             self.server_manager.sync()?;
             self.server_manager.ungrab()?;
+        } else {
+            error!("failed to setup new client");
         }
 
         Ok(())
@@ -25,6 +28,8 @@ impl<'a> WmClientUseCase<'a> {
         if let Some(client) = self.collection_manager.query_from_window(window)? {
             self.client_manager.remove(client)?;
             self.collection_manager.remove(window)?;
+        } else {
+            warn!("client not found");
         }
 
         Ok(())

@@ -1,5 +1,6 @@
 use std::error::Error;
 
+use log::warn;
 use x11rb::protocol::xproto::Window;
 
 use crate::client_usecase::types::WmClientUseCase;
@@ -11,12 +12,14 @@ impl<'a> WmClientUseCase<'a> {
                 .collection_manager
                 .query_from_window(self.client_manager.get_focus()?)?
             {
-                self.client_manager.grab(prev_active_client)?;
+                self.client_manager.grab_button(prev_active_client)?;
             }
 
             self.client_manager.set_focus(client)?;
             self.client_manager.raise(client)?;
-            self.client_manager.ungrab(client)?;
+            self.client_manager.ungrab_button(client)?;
+        } else {
+            warn!("client not found");
         }
 
         Ok(())

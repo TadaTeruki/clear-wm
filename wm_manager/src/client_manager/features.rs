@@ -2,7 +2,7 @@ mod create;
 mod draw;
 mod focus;
 mod get_geometry;
-mod grab;
+mod grab_button;
 mod map;
 mod move_resize;
 mod raise;
@@ -68,11 +68,11 @@ impl<'a> ClientManagerImpl<'a> for WmClientManager<'a> {
         self.raise_client(client)
     }
 
-    fn grab(&self, client: &WmClient) -> Result<(), Box<dyn Error>> {
-        self.grab_client(client)
+    fn grab_button(&self, client: &WmClient) -> Result<(), Box<dyn Error>> {
+        self.grab_button_client(client)
     }
 
-    fn ungrab(&self, client: &WmClient) -> Result<(), Box<dyn Error>> {
-        self.ungrab_client(client)
+    fn ungrab_button(&self, client: &WmClient) -> Result<(), Box<dyn Error>> {
+        self.ungrab_button_client(client)
     }
 }

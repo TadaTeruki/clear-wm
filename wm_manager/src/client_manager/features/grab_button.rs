@@ -8,7 +8,7 @@ use x11rb::protocol::xproto::{
 use crate::client_manager::types::manager::WmClientManager;
 
 impl<'a> WmClientManager<'a> {
-    pub fn grab_client(&self, client: &WmClient) -> Result<(), Box<dyn Error>> {
+    pub fn grab_button_client(&self, client: &WmClient) -> Result<(), Box<dyn Error>> {
         self.connection.grab_button(
             true,
             client.app,
@@ -23,7 +23,7 @@ impl<'a> WmClientManager<'a> {
         Ok(())
     }
 
-    pub fn ungrab_client(&self, client: &WmClient) -> Result<(), Box<dyn Error>> {
+    pub fn ungrab_button_client(&self, client: &WmClient) -> Result<(), Box<dyn Error>> {
         self.connection
             .ungrab_button(ButtonIndex::ANY, client.app, ModMask::ANY)?;
         Ok(())

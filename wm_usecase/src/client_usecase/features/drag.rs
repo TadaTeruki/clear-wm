@@ -19,6 +19,7 @@ impl<'a> WmClientUseCase<'a> {
     ) -> Result<(), Box<dyn Error>> {
         if let Some(client) = self.collection_manager.query_from_window(window)? {
             if window != client.frame {
+                warn!("invalid window type to drag");
                 return Ok(());
             }
             let frame_geom_option = self
@@ -29,6 +30,8 @@ impl<'a> WmClientUseCase<'a> {
                 self.cursor_manager
                     .start_to_drag_client(client.app, relative_x, relative_y, frame_geom);
             }
+        } else {
+            warn!("client not found");
         }
 
         Ok(())

@@ -36,7 +36,7 @@ pub trait ClientManagerImpl<'a> {
 
     fn raise(&self, client: &WmClient) -> Result<(), Box<dyn Error>>;
 
-    fn grab(&self, client: &WmClient) -> Result<(), Box<dyn Error>>;
+    fn grab_button(&self, client: &WmClient) -> Result<(), Box<dyn Error>>;
 
-    fn ungrab(&self, client: &WmClient) -> Result<(), Box<dyn Error>>;
+    fn ungrab_button(&self, client: &WmClient) -> Result<(), Box<dyn Error>>;
 }
