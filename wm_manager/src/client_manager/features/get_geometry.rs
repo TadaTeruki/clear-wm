@@ -7,7 +7,7 @@ use wm_model::entity::{
 };
 use x11rb::protocol::xproto::ConnectionExt;
 
-use crate::client_manager::manager::WmClientManager;
+use crate::client_manager::types::manager::WmClientManager;
 
 impl<'a> WmClientManager<'a> {
     pub fn get_client_geometry(

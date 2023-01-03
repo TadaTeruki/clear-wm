@@ -1,6 +1,6 @@
 use x11rb::protocol::xproto::Window;
 
-pub(super) struct WmClient {
+pub(crate) struct WmClient {
     pub app: Window,
     pub frame: Window,
     pub frame_surface: cairo::XCBSurface,

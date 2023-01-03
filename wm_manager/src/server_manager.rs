@@ -1,2 +1,2 @@
 mod features;
-pub mod manager;
+pub mod types;

@@ -1,7 +1,7 @@
 use std::error::Error;
 use x11rb::protocol::xproto::{ConfigureRequestEvent, ConfigureWindowAux, ConnectionExt};
 
-use super::{reflector::WmEventReflector, traits::EventReflectorImpl};
+use super::{traits::EventReflectorImpl, types::WmEventReflector};
 
 impl<'a> EventReflectorImpl<'a> for WmEventReflector<'a> {
     fn reflect_on_configure_request(

@@ -13,7 +13,7 @@ use x11rb::{
     },
 };
 
-use crate::client_manager::{
+use crate::client_manager::types::{
     client::WmClient,
     geometry::{app_relative_position, ClientGeometry},
     manager::WmClientManager,

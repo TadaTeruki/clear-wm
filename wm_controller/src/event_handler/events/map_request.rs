@@ -1,7 +1,7 @@
 use std::error::Error;
 use x11rb::protocol::xproto::MapRequestEvent;
 
-use crate::event_handler::handler::WmEventHandler;
+use crate::event_handler::types::WmEventHandler;
 
 impl<'a> WmEventHandler<'a> {
     pub fn handle_map_request(&mut self, event: &MapRequestEvent) -> Result<(), Box<dyn Error>> {

@@ -3,7 +3,7 @@ use wm_model::entity::cursor::{DragMode, WmCursorDragInfo};
 use wm_model::entity::geometry::Geometry;
 use wm_model::{entity::client::ClientID, traits::cursor_manager::CursorManagerImpl};
 
-use super::manager::WmCursorManager;
+use super::types::WmCursorManager;
 
 impl<'a> CursorManagerImpl for WmCursorManager<'a> {
     fn start_to_drag_client(

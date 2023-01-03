@@ -6,7 +6,7 @@ use x11rb::protocol::xproto::{
     ButtonIndex, ConnectionExt, EventMask, GrabMode, ModMask, WindowEnum,
 };
 
-use crate::client_manager::manager::WmClientManager;
+use crate::client_manager::types::manager::WmClientManager;
 
 impl<'a> WmClientManager<'a> {
     pub fn grab_client(&self, client_id: ClientID) -> Result<(), Box<dyn Error>> {

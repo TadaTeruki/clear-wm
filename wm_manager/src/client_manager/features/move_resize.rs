@@ -7,7 +7,9 @@ use wm_model::entity::{
 };
 use x11rb::protocol::xproto::{ConfigureWindowAux, ConnectionExt};
 
-use crate::client_manager::{client::WmClient, geometry::ClientGeometry, manager::WmClientManager};
+use crate::client_manager::types::{
+    client::WmClient, geometry::ClientGeometry, manager::WmClientManager,
+};
 
 pub enum WmMoveResizeMask {
     Move,

@@ -4,7 +4,7 @@ use log::warn;
 use wm_model::entity::{client::WindowType, cursor::DragMode, geometry::Geometry};
 use x11rb::protocol::xproto::Window;
 
-use crate::client_usecase::usecase::WmClientUseCase;
+use crate::client_usecase::types::WmClientUseCase;
 
 impl<'a> WmClientUseCase<'a> {
     pub fn usecase_start_to_drag_client(

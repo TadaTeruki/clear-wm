@@ -13,14 +13,14 @@ use x11rb::{
 use super::client::WmClient;
 
 pub struct WmClientManager<'a> {
-    pub(super) connection: &'a XCBConnection,
-    pub(super) screen: &'a Screen,
-    pub(super) visual: &'a WmVisual,
-    pub(super) config: &'a WmConfig,
+    pub(crate) connection: &'a XCBConnection,
+    pub(crate) screen: &'a Screen,
+    pub(crate) visual: &'a WmVisual,
+    pub(crate) config: &'a WmConfig,
 
-    pub(super) last_client_id: ClientID,
-    pub(super) client_index: HashMap<Window, (ClientID, WindowType)>,
-    pub(super) client_container: HashMap<ClientID, WmClient>,
+    pub(crate) last_client_id: ClientID,
+    pub(crate) client_index: HashMap<Window, (ClientID, WindowType)>,
+    pub(crate) client_container: HashMap<ClientID, WmClient>,
 }
 
 impl<'a> WmClientManager<'a> {

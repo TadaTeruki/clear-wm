@@ -1,2 +1,2 @@
-pub mod device;
 pub(super) mod rules;
+pub mod types;

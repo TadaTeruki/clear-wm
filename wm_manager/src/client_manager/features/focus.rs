@@ -7,7 +7,7 @@ use x11rb::{
     CURRENT_TIME,
 };
 
-use crate::client_manager::manager::WmClientManager;
+use crate::client_manager::types::manager::WmClientManager;
 
 impl<'a> WmClientManager<'a> {
     pub fn set_client_focus(&self, client_id: ClientID) -> Result<(), Box<dyn Error>> {

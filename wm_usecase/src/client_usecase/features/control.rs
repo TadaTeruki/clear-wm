@@ -3,7 +3,7 @@ use std::error::Error;
 use log::warn;
 use x11rb::protocol::xproto::Window;
 
-use crate::client_usecase::usecase::WmClientUseCase;
+use crate::client_usecase::types::WmClientUseCase;
 
 impl<'a> WmClientUseCase<'a> {
     pub fn usecase_activate_client(&self, window: Window) -> Result<(), Box<dyn Error>> {

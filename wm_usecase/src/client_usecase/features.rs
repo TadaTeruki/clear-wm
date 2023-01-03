@@ -9,7 +9,7 @@ use x11rb::protocol::xproto::Window;
 
 use crate::traits::ClientUseCaseImpl;
 
-use super::usecase::WmClientUseCase;
+use super::types::WmClientUseCase;
 
 impl<'a> ClientUseCaseImpl<'a> for WmClientUseCase<'a> {
     fn compose_client(&mut self, window: Window) -> Result<(), Box<dyn Error>> {

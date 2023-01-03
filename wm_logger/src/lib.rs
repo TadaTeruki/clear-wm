@@ -11,34 +11,31 @@ const WM_LOGGER_STYLE_END: &str = "\x1b[0m";
 
 static mut WM_LOG_FILE: Option<File> = None;
 
-fn logfile_init(build_config: &BuildConfig) {
-    unsafe {
-        let filename = match &build_config.logfile {
-            Some(v) => v,
-            None => {
-                warn!("the logfile not specified. log will only be written to stdout");
-                return;
-            }
-        };
-        WM_LOG_FILE = match File::create(filename) {
-            Ok(v) => Some(v),
-            Err(err) => {
-                eprintln!("{}", err);
-                return;
-            }
-        };
-        info!(
-            "the logfile successfully prepared. now log will be recorded at '{}'.",
-            filename
-        );
-    }
-}
 pub struct WmLogger;
 
 impl WmLogger {
     pub fn init(&'static self, build_config: &BuildConfig) -> Result<(), SetLoggerError> {
         log::set_logger(self).map(|()| log::set_max_level(LevelFilter::Info))?;
-        logfile_init(build_config);
+        unsafe {
+            let filename = match &build_config.logfile {
+                Some(v) => v,
+                None => {
+                    warn!("the logfile not specified. log will only be written to stdout");
+                    return Ok(());
+                }
+            };
+            WM_LOG_FILE = match File::create(filename) {
+                Ok(v) => Some(v),
+                Err(err) => {
+                    eprintln!("{}", err);
+                    return Ok(());
+                }
+            };
+            info!(
+                "the logfile successfully prepared. now log will be recorded at '{}'.",
+                filename
+            );
+        }
         Ok(())
     }
 }

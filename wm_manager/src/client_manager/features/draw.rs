@@ -1,13 +1,13 @@
 use std::error::Error;
 
 use log::warn;
-use wm_drawing::{drawing_device::device::WmDrawingDevice, traits::ClientDrawingDeviceImpl};
+use wm_drawing::{drawing_device::types::WmDrawingDevice, traits::ClientDrawingDeviceImpl};
 use wm_model::{
     entity::client::{ClientID, WindowType},
     traits::client_manager::ClientManagerImpl,
 };
 
-use crate::client_manager::manager::WmClientManager;
+use crate::client_manager::types::manager::WmClientManager;
 
 impl<'a> WmClientManager<'a> {
     pub fn draw_client_frame(&self, client_id: ClientID) -> Result<(), Box<dyn Error>> {

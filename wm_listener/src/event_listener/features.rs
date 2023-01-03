@@ -2,7 +2,7 @@ use std::error::Error;
 
 use x11rb::{connection::Connection, protocol::Event};
 
-use super::{listener::WmEventListener, traits::EventListenerImpl};
+use super::{traits::EventListenerImpl, types::WmEventListener};
 
 impl<'a> EventListenerImpl<'a> for WmEventListener<'a> {
     fn wait(&self) -> Result<Event, Box<dyn Error>> {

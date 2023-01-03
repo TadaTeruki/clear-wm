@@ -1,4 +1,4 @@
-use crate::event_handler::handler::WmEventHandler;
+use crate::event_handler::types::WmEventHandler;
 use log::error;
 
 pub fn start_session(handler: &mut WmEventHandler) {

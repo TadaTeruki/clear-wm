@@ -4,7 +4,7 @@ use log::warn;
 use wm_model::entity::client::ClientID;
 use x11rb::protocol::xproto::{ConfigureWindowAux, ConnectionExt, StackMode};
 
-use crate::client_manager::manager::WmClientManager;
+use crate::client_manager::types::manager::WmClientManager;
 
 impl<'a> WmClientManager<'a> {
     pub fn raise_client(&self, client_id: ClientID) -> Result<(), Box<dyn Error>> {

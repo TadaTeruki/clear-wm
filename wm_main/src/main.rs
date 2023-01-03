@@ -1,16 +1,16 @@
 use log::info;
 use wm_config::Config;
-use wm_controller::{event_handler::handler::WmEventHandler, session::start_session};
+use wm_controller::{event_handler::types::WmEventHandler, session::start_session};
 use wm_listener::{
-    event_listener::listener::WmEventListener, event_reflector::reflector::WmEventReflector,
+    event_listener::types::WmEventListener, event_reflector::types::WmEventReflector,
 };
 use wm_logger::WmLogger;
 use wm_manager::{
-    client_manager::manager::WmClientManager, cursor_manager::manager::WmCursorManager,
-    server_manager::manager::WmServerManager,
+    client_manager::types::manager::WmClientManager, cursor_manager::types::WmCursorManager,
+    server_manager::types::WmServerManager,
 };
 use wm_model::entity::visual::WmVisual;
-use wm_usecase::client_usecase::usecase::WmClientUseCase;
+use wm_usecase::client_usecase::types::WmClientUseCase;
 use x11rb::{
     connection::Connection,
     protocol::xproto::{ChangeWindowAttributesAux, ConnectionExt as _, EventMask},

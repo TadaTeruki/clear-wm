@@ -1,2 +1,2 @@
 mod features;
-pub mod usecase;
+pub mod types;

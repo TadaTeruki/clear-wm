@@ -3,7 +3,7 @@ use std::error::Error;
 use log::{error, info};
 use x11rb::protocol::Event;
 
-use super::handler::WmEventHandler;
+use super::types::WmEventHandler;
 
 mod button_press;
 mod button_release;

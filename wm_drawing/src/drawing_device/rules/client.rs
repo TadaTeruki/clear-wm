@@ -1,6 +1,6 @@
 use std::error::Error;
 
-use crate::{drawing_device::device::WmDrawingDevice, traits::ClientDrawingDeviceImpl};
+use crate::{drawing_device::types::WmDrawingDevice, traits::ClientDrawingDeviceImpl};
 
 impl<'a> ClientDrawingDeviceImpl for WmDrawingDevice<'a> {
     fn draw(&self) -> Result<(), Box<dyn Error>> {

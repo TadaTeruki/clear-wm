@@ -3,7 +3,7 @@ use std::error::Error;
 use wm_model::traits::server_manager::ServerManagerImpl;
 use x11rb::{protocol::xproto::ConnectionExt, wrapper::ConnectionExt as _};
 
-use super::manager::WmServerManager;
+use super::types::WmServerManager;
 
 impl<'a> ServerManagerImpl for WmServerManager<'a> {
     fn grab(&mut self) -> Result<(), Box<dyn Error>> {

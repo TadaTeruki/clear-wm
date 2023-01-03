@@ -21,7 +21,7 @@ use x11rb::protocol::xproto::Window;
 
 use self::move_resize::WmMoveResizeMask;
 
-use super::manager::WmClientManager;
+use super::types::manager::WmClientManager;
 
 impl<'a> ClientManagerImpl<'a> for WmClientManager<'a> {
     fn create(&mut self, window: Window) -> Result<ClientID, Box<dyn Error>> {
