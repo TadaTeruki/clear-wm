@@ -42,8 +42,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f3125b15ec28b84c238f6f476c6034016a5f6cc0221cb514ca46c532139fc97d"
 dependencies = [
  "bitflags",
- "cairo-sys-rs",
- "glib",
+ "cairo-sys-rs 0.16.3",
+ "glib 0.16.7",
+ "libc",
+ "once_cell",
+ "thiserror",
+]
+
+[[package]]
+name = "cairo-rs"
+version = "0.17.0"
+source = "git+https://github.com/gtk-rs/gtk-rs-core.git#9e7db4bdffdfe2782738cc166d897ac5e551aea1"
+dependencies = [
+ "bitflags",
+ "cairo-sys-rs 0.17.0",
+ "glib 0.17.0",
  "libc",
  "once_cell",
  "thiserror",
@@ -55,7 +68,17 @@ version = "0.16.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7c48f4af05fabdcfa9658178e1326efa061853f040ce7d72e33af6885196f421"
 dependencies = [
- "glib-sys",
+ "glib-sys 0.16.3",
+ "libc",
+ "system-deps",
+]
+
+[[package]]
+name = "cairo-sys-rs"
+version = "0.17.0"
+source = "git+https://github.com/gtk-rs/gtk-rs-core.git#9e7db4bdffdfe2782738cc166d897ac5e551aea1"
+dependencies = [
+ "glib-sys 0.17.0",
  "libc",
  "system-deps",
 ]
@@ -198,6 +221,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "futures-io"
+version = "0.3.25"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "00f5fb52a06bdcadeb54e8d3671f8888a39697dcb0b81b23b55174030427f4eb"
+
+[[package]]
 name = "futures-macro"
 version = "0.3.25"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -239,13 +268,44 @@ dependencies = [
 ]
 
 [[package]]
+name = "gio"
+version = "0.17.0"
+source = "git+https://github.com/gtk-rs/gtk-rs-core.git#9e7db4bdffdfe2782738cc166d897ac5e551aea1"
+dependencies = [
+ "bitflags",
+ "futures-channel",
+ "futures-core",
+ "futures-io",
+ "futures-util",
+ "gio-sys 0.17.0",
+ "glib 0.17.0",
+ "libc",
+ "once_cell",
+ "pin-project-lite",
+ "smallvec",
+ "thiserror",
+]
+
+[[package]]
 name = "gio-sys"
 version = "0.16.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e9b693b8e39d042a95547fc258a7b07349b1f0b48f4b2fa3108ba3c51c0b5229"
 dependencies = [
- "glib-sys",
- "gobject-sys",
+ "glib-sys 0.16.3",
+ "gobject-sys 0.16.3",
+ "libc",
+ "system-deps",
+ "winapi",
+]
+
+[[package]]
+name = "gio-sys"
+version = "0.17.0"
+source = "git+https://github.com/gtk-rs/gtk-rs-core.git#9e7db4bdffdfe2782738cc166d897ac5e551aea1"
+dependencies = [
+ "glib-sys 0.17.0",
+ "gobject-sys 0.17.0",
  "libc",
  "system-deps",
  "winapi",
@@ -263,11 +323,33 @@ dependencies = [
  "futures-executor",
  "futures-task",
  "futures-util",
- "gio-sys",
- "glib-macros",
- "glib-sys",
- "gobject-sys",
+ "gio-sys 0.16.3",
+ "glib-macros 0.16.3",
+ "glib-sys 0.16.3",
+ "gobject-sys 0.16.3",
  "libc",
+ "once_cell",
+ "smallvec",
+ "thiserror",
+]
+
+[[package]]
+name = "glib"
+version = "0.17.0"
+source = "git+https://github.com/gtk-rs/gtk-rs-core.git#9e7db4bdffdfe2782738cc166d897ac5e551aea1"
+dependencies = [
+ "bitflags",
+ "futures-channel",
+ "futures-core",
+ "futures-executor",
+ "futures-task",
+ "futures-util",
+ "gio-sys 0.17.0",
+ "glib-macros 0.17.0",
+ "glib-sys 0.17.0",
+ "gobject-sys 0.17.0",
+ "libc",
+ "memchr",
  "once_cell",
  "smallvec",
  "thiserror",
@@ -289,10 +371,33 @@ dependencies = [
 ]
 
 [[package]]
+name = "glib-macros"
+version = "0.17.0"
+source = "git+https://github.com/gtk-rs/gtk-rs-core.git#9e7db4bdffdfe2782738cc166d897ac5e551aea1"
+dependencies = [
+ "anyhow",
+ "heck",
+ "proc-macro-crate",
+ "proc-macro-error",
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "glib-sys"
 version = "0.16.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c61a4f46316d06bfa33a7ac22df6f0524c8be58e3db2d9ca99ccb1f357b62a65"
+dependencies = [
+ "libc",
+ "system-deps",
+]
+
+[[package]]
+name = "glib-sys"
+version = "0.17.0"
+source = "git+https://github.com/gtk-rs/gtk-rs-core.git#9e7db4bdffdfe2782738cc166d897ac5e551aea1"
 dependencies = [
  "libc",
  "system-deps",
@@ -304,7 +409,17 @@ version = "0.16.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3520bb9c07ae2a12c7f2fbb24d4efc11231c8146a86956413fb1a79bb760a0f1"
 dependencies = [
- "glib-sys",
+ "glib-sys 0.16.3",
+ "libc",
+ "system-deps",
+]
+
+[[package]]
+name = "gobject-sys"
+version = "0.17.0"
+source = "git+https://github.com/gtk-rs/gtk-rs-core.git#9e7db4bdffdfe2782738cc166d897ac5e551aea1"
+dependencies = [
+ "glib-sys 0.17.0",
  "libc",
  "system-deps",
 ]
@@ -379,6 +494,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "memchr"
+version = "2.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2dffe52ecf27772e601905b7522cb4ef790d2cc203488bbd0e2fe85fcb74566d"
+
+[[package]]
 name = "memoffset"
 version = "0.6.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -424,6 +545,55 @@ name = "once_cell"
 version = "1.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6f61fba1741ea2b3d6a1e3178721804bb716a68a6aeba1149b5d52e3d464ea66"
+
+[[package]]
+name = "pango"
+version = "0.17.0"
+source = "git+https://github.com/gtk-rs/gtk-rs-core.git#9e7db4bdffdfe2782738cc166d897ac5e551aea1"
+dependencies = [
+ "bitflags",
+ "gio",
+ "glib 0.17.0",
+ "libc",
+ "once_cell",
+ "pango-sys",
+]
+
+[[package]]
+name = "pango-sys"
+version = "0.17.0"
+source = "git+https://github.com/gtk-rs/gtk-rs-core.git#9e7db4bdffdfe2782738cc166d897ac5e551aea1"
+dependencies = [
+ "glib-sys 0.17.0",
+ "gobject-sys 0.17.0",
+ "libc",
+ "system-deps",
+]
+
+[[package]]
+name = "pangocairo"
+version = "0.17.0"
+source = "git+https://github.com/gtk-rs/gtk-rs-core.git#9e7db4bdffdfe2782738cc166d897ac5e551aea1"
+dependencies = [
+ "bitflags",
+ "cairo-rs 0.17.0",
+ "glib 0.17.0",
+ "libc",
+ "pango",
+ "pangocairo-sys",
+]
+
+[[package]]
+name = "pangocairo-sys"
+version = "0.17.0"
+source = "git+https://github.com/gtk-rs/gtk-rs-core.git#9e7db4bdffdfe2782738cc166d897ac5e551aea1"
+dependencies = [
+ "cairo-sys-rs 0.17.0",
+ "glib-sys 0.17.0",
+ "libc",
+ "pango-sys",
+ "system-deps",
+]
 
 [[package]]
 name = "pin-project-lite"
@@ -773,8 +943,10 @@ dependencies = [
 name = "wm_drawing"
 version = "0.1.0"
 dependencies = [
- "cairo-rs",
+ "cairo-rs 0.16.7",
  "log",
+ "pango",
+ "pangocairo",
  "wm_config",
 ]
 
@@ -799,7 +971,7 @@ dependencies = [
 name = "wm_manager"
 version = "0.1.0"
 dependencies = [
- "cairo-rs",
+ "cairo-rs 0.16.7",
  "log",
  "wm_config",
  "wm_drawing",
@@ -811,7 +983,7 @@ dependencies = [
 name = "wm_model"
 version = "0.1.0"
 dependencies = [
- "cairo-rs",
+ "cairo-rs 0.16.7",
  "log",
  "x11rb",
 ]

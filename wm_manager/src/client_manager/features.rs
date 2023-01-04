@@ -48,8 +48,8 @@ impl<'a> ClientManagerImpl<'a> for WmClientManager<'a> {
         self.move_resize_client(client, geom, window_type, mask)
     }
 
-    fn draw_frame(&self, client: &WmClient) -> Result<(), Box<dyn Error>> {
-        self.draw_client_frame(client)
+    fn draw_frame(&self, client: &WmClient, client_title: String) -> Result<(), Box<dyn Error>> {
+        self.draw_client_frame(client, client_title)
     }
 
     fn remove(&mut self, client: &WmClient) -> Result<(), Box<dyn Error>> {

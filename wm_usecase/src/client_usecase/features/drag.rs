@@ -221,7 +221,8 @@ impl<'a> WmClientUseCase<'a> {
 
         if need_redraw {
             self.server_manager.sync()?;
-            self.client_manager.draw_frame(client)?;
+            self.client_manager
+                .draw_frame(client, self.property_manager.client_title(client)?)?;
         }
 
         self.server_manager.ungrab()?;

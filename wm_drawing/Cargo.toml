@@ -8,5 +8,7 @@ edition.workspace = true
 
 [dependencies]
 cairo-rs = { version = "0.16", features = ["xcb"] }
+pango = { git = "https://github.com/gtk-rs/gtk-rs-core.git", package = "pango" }
+pangocairo = { git = "https://github.com/gtk-rs/gtk-rs-core.git", package = "pangocairo" }
 wm_config = { path = "../wm_config" }
 log = "0.4"

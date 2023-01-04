@@ -14,7 +14,8 @@ impl<'a> WmClientUseCase<'a> {
         if let Some(client) = res {
             self.server_manager.grab()?;
             self.client_manager.map(client)?;
-            self.client_manager.draw_frame(client)?;
+            self.client_manager
+                .draw_frame(client, self.property_manager.client_title(client)?)?;
             self.server_manager.sync()?;
             self.server_manager.ungrab()?;
         } else {

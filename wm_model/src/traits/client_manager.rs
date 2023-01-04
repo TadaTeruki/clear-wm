@@ -26,7 +26,7 @@ pub trait ClientManagerImpl<'a> {
         window_type: WindowType,
     ) -> Result<Option<Geometry>, Box<dyn Error>>;
 
-    fn draw_frame(&self, client: &WmClient) -> Result<(), Box<dyn Error>>;
+    fn draw_frame(&self, client: &WmClient, client_title: String) -> Result<(), Box<dyn Error>>;
 
     fn remove(&mut self, client: &WmClient) -> Result<(), Box<dyn Error>>;
 
