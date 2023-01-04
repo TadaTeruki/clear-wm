@@ -1,2 +1,2 @@
-pub mod draw_device;
+pub mod drawing_device;
 pub mod traits;
