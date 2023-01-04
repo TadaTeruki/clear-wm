@@ -1,5 +1,5 @@
 [package]
-name = "wm_drawing"
+name = "wm_draw"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true

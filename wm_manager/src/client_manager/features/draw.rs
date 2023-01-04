@@ -1,6 +1,6 @@
 use std::error::Error;
 
-use wm_drawing::{drawing_device::types::WmDrawingDevice, traits::ClientDrawingDeviceImpl};
+use wm_draw::{draw_device::types::WmDrawingDevice, traits::ClientDrawingDeviceImpl};
 use wm_model::entity::client::WmClient;
 use x11rb::protocol::xproto::ConnectionExt;
 

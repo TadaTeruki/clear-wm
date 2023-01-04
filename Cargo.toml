@@ -8,7 +8,7 @@ members = [
     "wm_controller",
     "wm_manager",
     "wm_usecase",
-    "wm_drawing"
+    "wm_draw"
 ]
 
 [workspace.package]

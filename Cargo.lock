@@ -940,7 +940,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "wm_drawing"
+name = "wm_draw"
 version = "0.1.0"
 dependencies = [
  "cairo-rs 0.16.7",
@@ -974,7 +974,7 @@ dependencies = [
  "cairo-rs 0.16.7",
  "log",
  "wm_config",
- "wm_drawing",
+ "wm_draw",
  "wm_model",
  "x11rb",
 ]

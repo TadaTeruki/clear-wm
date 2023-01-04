@@ -3,7 +3,7 @@ use std::error::Error;
 use pango::{traits::FontMapExt, FontDescription, Layout};
 use pangocairo::{show_layout, FontMap};
 
-use crate::{drawing_device::types::WmDrawingDevice, traits::ClientDrawingDeviceImpl};
+use crate::{draw_device::types::WmDrawingDevice, traits::ClientDrawingDeviceImpl};
 
 impl<'a> ClientDrawingDeviceImpl for WmDrawingDevice<'a> {
     fn draw(&self, client_title: String) -> Result<(), Box<dyn Error>> {
